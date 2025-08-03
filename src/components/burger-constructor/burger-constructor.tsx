@@ -1,8 +1,14 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
+import { RootState } from '../../services/store';
+import { fetchIngredients, fetchUser } from '../../services/reducers/userSlice';
+import { getIngredientsApi } from '@api';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
 
 export const BurgerConstructor: FC = () => {
+  const dispatch = useAppDispatch();
+  /** TODO: взять переменную из стора */
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
   const constructorItems = {
     bun: {

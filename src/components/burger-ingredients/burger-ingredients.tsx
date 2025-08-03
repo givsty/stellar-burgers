@@ -3,12 +3,20 @@ import { useInView } from 'react-intersection-observer';
 
 import { TIngredient, TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import { fetchIngredients } from '../../services/reducers/userSlice';
 
 export const BurgerIngredients: FC = () => {
+  const dispatch = useAppDispatch();
+  const ingredients = useAppSelector((state) => state.ingredients);
+
+  useEffect(() => {
+    dispatch(fetchIngredients());
+  }, [dispatch]);
   /** TODO: взять переменные из стора */
-  const buns: TIngredient[] = [];
-  const mains: TIngredient[] = [];
-  const sauces: TIngredient[] = [];
+  const buns: TIngredient[] = ingredients.filter(element => element.type !== 'sauce' && element.type !== 'main');
+  const mains: TIngredient[] = ingredients.filter(element => element.type !== 'bun' && element.type !== 'sauce');
+  const sauces: TIngredient[] = ingredients.filter(element => element.type !== 'bun' && element.type !== 'main');;
 
   const [currentTab, setCurrentTab] = useState<TTabMode>('bun');
   const titleBunRef = useRef<HTMLHeadingElement>(null);
