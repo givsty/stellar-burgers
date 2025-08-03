@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../hooks/redux';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useAppDispatch();
+
   /** TODO: взять переменную из стора */
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
   const constructorItems = {

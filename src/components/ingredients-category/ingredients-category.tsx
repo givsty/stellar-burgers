@@ -9,13 +9,18 @@ export const IngredientsCategory = forwardRef<
   HTMLUListElement,
   TIngredientsCategoryProps
 >(({ title, titleRef, ingredients }, ref) => {
- 
   /** TODO: взять переменную из стора */
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchIngredients());
+  }, []);
+
   const burgerConstructor = {
     bun: {
       _id: ''
     },
-    ingredients: [],
+    ingredients: []
   };
 
   const ingredientsCounters = useMemo(() => {

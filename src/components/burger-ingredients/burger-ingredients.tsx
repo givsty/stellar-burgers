@@ -14,9 +14,15 @@ export const BurgerIngredients: FC = () => {
     dispatch(fetchIngredients());
   }, [dispatch]);
   /** TODO: взять переменные из стора */
-  const buns: TIngredient[] = ingredients.filter(element => element.type !== 'sauce' && element.type !== 'main');
-  const mains: TIngredient[] = ingredients.filter(element => element.type !== 'bun' && element.type !== 'sauce');
-  const sauces: TIngredient[] = ingredients.filter(element => element.type !== 'bun' && element.type !== 'main');;
+  const buns: TIngredient[] = ingredients.filter(
+    (element) => element.type !== 'sauce' && element.type !== 'main'
+  );
+  const mains: TIngredient[] = ingredients.filter(
+    (element) => element.type !== 'bun' && element.type !== 'sauce'
+  );
+  const sauces: TIngredient[] = ingredients.filter(
+    (element) => element.type !== 'bun' && element.type !== 'main'
+  );
 
   const [currentTab, setCurrentTab] = useState<TTabMode>('bun');
   const titleBunRef = useRef<HTMLHeadingElement>(null);

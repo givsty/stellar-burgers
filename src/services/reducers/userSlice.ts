@@ -23,6 +23,8 @@ export const fetchIngredients = createAsyncThunk(
   async () => getIngredientsApi()
 );
 
+export const fun = () => {};
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
