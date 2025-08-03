@@ -17,9 +17,11 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 
 const App = () => {
   const navigate = useNavigate();
+
   const onClose = () => {
     navigate(-1);
   };
+
   return (
     <div className={styles.app}>
       <AppHeader />
