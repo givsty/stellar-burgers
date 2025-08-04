@@ -37,13 +37,13 @@ const App = () => {
         <Route
           path='/feed/:number'
           element={
-            <Modal onClose={onClose} title=''>
+            <Modal onClose={onClose} title='Заказ'>
               <OrderInfo />
             </Modal>
           }
         />
         <Route
-          path='/ingredients/:id'
+          path='/ingredients/:ingredientId'
           element={
             <Modal title='Ингредиент' onClose={onClose}>
               <IngredientDetails />

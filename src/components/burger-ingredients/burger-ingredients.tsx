@@ -12,8 +12,8 @@ export const BurgerIngredients: FC = () => {
 
   useEffect(() => {
     dispatch(fetchIngredients());
-  }, [dispatch]);
-  /** TODO: взять переменные из стора */
+  }, []);
+
   const buns: TIngredient[] = ingredients.filter(
     (element) => element.type !== 'sauce' && element.type !== 'main'
   );
