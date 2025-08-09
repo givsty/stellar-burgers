@@ -8,14 +8,13 @@ import { useAppDispatch, useAppSelector } from '../hooks/redux';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useAppDispatch();
-
-  /** TODO: взять переменную из стора */
+  const ingredients = useAppSelector((state) => state.constructorItems);
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
   const constructorItems = {
     bun: {
       price: 0
     },
-    ingredients: []
+    ingredients: ingredients
   };
 
   const orderRequest = false;
@@ -36,7 +35,6 @@ export const BurgerConstructor: FC = () => {
       ),
     [constructorItems]
   );
-
   return (
     <BurgerConstructorUI
       price={price}

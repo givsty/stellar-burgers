@@ -1,17 +1,29 @@
 import { getIngredientsApi, getUserApi } from '@api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TIngredient, TUser } from '@utils-types';
+import { TConstructorIngredient, TIngredient, TUser } from '@utils-types';
 
 interface userState {
   isLoading: boolean;
   user: {};
   ingredients: TIngredient[];
+  isAuthCheked: boolean;
+  isAuthenticated: boolean;
+  data: {};
+  loginUserError: null;
+  loginUserRequest: boolean;
+  constructorItems: TConstructorIngredient[];
 }
 
 const initialState: userState = {
   isLoading: false,
   user: {},
-  ingredients: []
+  ingredients: [],
+  isAuthCheked: false,
+  isAuthenticated: false,
+  data: {},
+  loginUserError: null,
+  loginUserRequest: false,
+  constructorItems: []
 };
 
 export const fetchUser = createAsyncThunk('users/fetchUser', async () =>
@@ -29,10 +41,13 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    addUser(state, action) {}
+    addIngredient(state, action) {
+      state.constructorItems.push(action.payload);
+    }
   },
 
   extraReducers: (builder) => {
+    //Ingredients
     builder.addCase(fetchIngredients.pending, (state, action) => {
       state.isLoading = true;
     });
@@ -46,20 +61,24 @@ const userSlice = createSlice({
       state.isLoading = false;
     });
 
+    //user
     builder.addCase(fetchUser.pending, (state, action) => {
-      state.isLoading = true;
-    });
-    builder.addCase(fetchUser.rejected, (state, action) => {
       state.isLoading = false;
     });
+
     builder.addCase(
       fetchUser.fulfilled,
       (state, action: PayloadAction<{ user: TUser }>) => {
-        state.isLoading = false;
+        state.isLoading = true;
         state.user = action.payload;
       }
     );
+
+    builder.addCase(fetchUser.rejected, (state, action) => {
+      state.isAuthCheked = false;
+    });
   }
 });
 
+export const { addIngredient } = userSlice.actions;
 export default userSlice.reducer;

@@ -5,6 +5,7 @@ import { TIngredient, TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { fetchIngredients } from '../../services/reducers/userSlice';
+import { getFeedsApi, getOrdersApi, getUserApi } from '@api';
 
 export const BurgerIngredients: FC = () => {
   const dispatch = useAppDispatch();
@@ -13,7 +14,6 @@ export const BurgerIngredients: FC = () => {
   useEffect(() => {
     dispatch(fetchIngredients());
   }, []);
-
   const buns: TIngredient[] = ingredients.filter(
     (element) => element.type !== 'sauce' && element.type !== 'main'
   );

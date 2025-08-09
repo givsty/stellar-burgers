@@ -11,7 +11,7 @@ export const IngredientsCategory = forwardRef<
 >(({ title, titleRef, ingredients }, ref) => {
   /** TODO: взять переменную из стора */
   const dispatch = useAppDispatch();
-
+  const items = useAppSelector((state) => state.ingredients);
   useEffect(() => {
     dispatch(fetchIngredients());
   }, []);
@@ -20,7 +20,7 @@ export const IngredientsCategory = forwardRef<
     bun: {
       _id: ''
     },
-    ingredients: []
+    ingredients: items
   };
 
   const ingredientsCounters = useMemo(() => {
