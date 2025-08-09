@@ -11,7 +11,13 @@ interface userState {
   data: {};
   loginUserError: null;
   loginUserRequest: boolean;
-  constructorItems: TConstructorIngredient[];
+
+  constructorItems: {
+    bun: {
+      price: 0;
+    };
+    ingredients: TConstructorIngredient[];
+  };
 }
 
 const initialState: userState = {
@@ -23,7 +29,12 @@ const initialState: userState = {
   data: {},
   loginUserError: null,
   loginUserRequest: false,
-  constructorItems: []
+  constructorItems: {
+    bun: {
+      price: 0
+    },
+    ingredients: []
+  }
 };
 
 export const fetchUser = createAsyncThunk('users/fetchUser', async () =>
@@ -42,7 +53,10 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     addIngredient(state, action) {
-      state.constructorItems.push(action.payload);
+      state.constructorItems.ingredients.push(action.payload);
+    },
+    addBuns(state, action) {
+      state.constructorItems.bun = action.payload;
     }
   },
 
@@ -80,5 +94,5 @@ const userSlice = createSlice({
   }
 });
 
-export const { addIngredient } = userSlice.actions;
+export const { addIngredient, addBuns } = userSlice.actions;
 export default userSlice.reducer;

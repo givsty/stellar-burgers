@@ -8,15 +8,8 @@ import { useAppDispatch, useAppSelector } from '../hooks/redux';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useAppDispatch();
-  const ingredients = useAppSelector((state) => state.constructorItems);
+  const constructorItems = useAppSelector((state) => state.constructorItems);
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const constructorItems = {
-    bun: {
-      price: 0
-    },
-    ingredients: ingredients
-  };
-
   const orderRequest = false;
 
   const orderModalData = null;
