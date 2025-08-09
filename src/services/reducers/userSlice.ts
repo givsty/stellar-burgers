@@ -57,6 +57,12 @@ const userSlice = createSlice({
     },
     addBuns(state, action) {
       state.constructorItems.bun = action.payload;
+    },
+    deleteIngredient(state, action) {
+      state.constructorItems.ingredients =
+        state.constructorItems.ingredients.filter(
+          (element) => element.id !== action.payload.id
+        );
     }
   },
 
@@ -94,5 +100,5 @@ const userSlice = createSlice({
   }
 });
 
-export const { addIngredient, addBuns } = userSlice.actions;
+export const { addIngredient, addBuns, deleteIngredient } = userSlice.actions;
 export default userSlice.reducer;
