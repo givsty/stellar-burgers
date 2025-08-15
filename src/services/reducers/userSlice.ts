@@ -1,6 +1,11 @@
-import { getIngredientsApi, getUserApi } from '@api';
+import { getFeedsApi, getIngredientsApi, getUserApi } from '@api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TConstructorIngredient, TIngredient, TUser } from '@utils-types';
+import {
+  TConstructorIngredient,
+  TIngredient,
+  TOrder,
+  TUser
+} from '@utils-types';
 
 interface userState {
   isLoading: boolean;
@@ -11,7 +16,7 @@ interface userState {
   data: {};
   loginUserError: null;
   loginUserRequest: boolean;
-
+  orders: TOrder[];
   constructorItems: {
     bun: {
       price: 0;
@@ -29,6 +34,7 @@ const initialState: userState = {
   data: {},
   loginUserError: null,
   loginUserRequest: false,
+  orders: [],
   constructorItems: {
     bun: {
       price: 0
@@ -46,6 +52,9 @@ export const fetchIngredients = createAsyncThunk(
   async () => getIngredientsApi()
 );
 
+export const fetchFeeds = createAsyncThunk('feed/fetchFeeds', async () =>
+  getFeedsApi()
+);
 export const fun = () => {};
 
 const userSlice = createSlice({
@@ -61,12 +70,29 @@ const userSlice = createSlice({
     deleteIngredient(state, action) {
       state.constructorItems.ingredients =
         state.constructorItems.ingredients.filter(
-          (element) => element.id !== action.payload.id
+          (element) => element._id !== action.payload
         );
     }
+
+    // upIngredient(state, action) {
+    //   state.constructorItems.ingredients = state.constructorItems.ingredients.splice(0, 1, action.payload);
+    // }
   },
 
   extraReducers: (builder) => {
+    //Feeds
+    builder.addCase(fetchFeeds.pending, (state, action) => {
+      state.isLoading = true;
+    });
+
+    builder.addCase(fetchFeeds.fulfilled, (state, action) => {
+      state.orders = action.payload.orders;
+    });
+
+    builder.addCase(fetchFeeds.rejected, (state, action) => {
+      state.isLoading = false;
+    });
+
     //Ingredients
     builder.addCase(fetchIngredients.pending, (state, action) => {
       state.isLoading = true;
