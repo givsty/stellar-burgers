@@ -17,6 +17,12 @@ interface userState {
   loginUserError: null;
   loginUserRequest: boolean;
   orders: TOrder[];
+  feed: {
+    total: number;
+    totalToday: number;
+    success: boolean;
+    orders: TOrder[];
+  };
   constructorItems: {
     bun: {
       price: 0;
@@ -34,6 +40,12 @@ const initialState: userState = {
   data: {},
   loginUserError: null,
   loginUserRequest: false,
+  feed: {
+    total: 0,
+    totalToday: 0,
+    success: false,
+    orders: []
+  },
   orders: [],
   constructorItems: {
     bun: {
@@ -86,7 +98,7 @@ const userSlice = createSlice({
     });
 
     builder.addCase(fetchFeeds.fulfilled, (state, action) => {
-      state.orders = action.payload.orders;
+      state.feed = action.payload;
     });
 
     builder.addCase(fetchFeeds.rejected, (state, action) => {

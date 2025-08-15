@@ -63,7 +63,7 @@ const App = () => {
           }
         />
         <Route
-          path='/feed/:number'
+          path='/feed/:orderId'
           element={
             <ProtectedRoute>
               <Modal onClose={onClose} title='Заказ'>

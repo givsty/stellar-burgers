@@ -6,13 +6,11 @@ import { fetchFeeds } from '../../services/reducers/userSlice';
 
 export const Feed: FC = () => {
   const dispatch = useAppDispatch();
-  const orders = useAppSelector((state) => state.orders);
+  const orders = useAppSelector((state) => state.feed.orders);
 
   useEffect(() => {
     dispatch(fetchFeeds());
   }, [dispatch]);
-
-  console.log(orders);
 
   if (!orders.length) {
     return <Preloader />;
