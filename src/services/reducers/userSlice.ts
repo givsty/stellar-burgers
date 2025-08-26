@@ -1,4 +1,13 @@
-import { getFeedsApi, getIngredientsApi, getUserApi } from '@api';
+import {
+  getFeedsApi,
+  getIngredientsApi,
+  getUserApi,
+  loginUserApi,
+  refreshToken,
+  registerUserApi,
+  TLoginData,
+  TRegisterData
+} from '@api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   TConstructorIngredient,
@@ -9,10 +18,10 @@ import {
 
 interface userState {
   isLoading: boolean;
-  user: {};
+  user: TUser;
   ingredients: TIngredient[];
   isAuthCheked: boolean;
-  isAuthenticated: boolean;
+  isAuthenticated: boolean | undefined;
   data: {};
   loginUserError: null;
   loginUserRequest: boolean;
@@ -33,7 +42,10 @@ interface userState {
 
 const initialState: userState = {
   isLoading: false,
-  user: {},
+  user: {
+    email: '',
+    name: ''
+  },
   ingredients: [],
   isAuthCheked: false,
   isAuthenticated: false,
@@ -55,6 +67,33 @@ const initialState: userState = {
   }
 };
 
+export const fetchPostUserData = createAsyncThunk(
+  'fetchPostUserData/userData',
+  async (data: TRegisterData, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await registerUserApi(data);
+      console.log(response);
+      return response;
+    } catch (error) {
+      rejectWithValue(error);
+      console.log(error);
+    }
+  }
+);
+
+export const fetchPostLoginUser = createAsyncThunk(
+  'fetchPostLoginUser/userData',
+  async (data: TLoginData, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await loginUserApi(data);
+      localStorage.setItem('token', response.accessToken);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 export const fetchUser = createAsyncThunk('users/fetchUser', async () =>
   getUserApi()
 );
@@ -67,7 +106,6 @@ export const fetchIngredients = createAsyncThunk(
 export const fetchFeeds = createAsyncThunk('feed/fetchFeeds', async () =>
   getFeedsApi()
 );
-export const fun = () => {};
 
 const userSlice = createSlice({
   name: 'user',
@@ -76,22 +114,57 @@ const userSlice = createSlice({
     addIngredient(state, action) {
       state.constructorItems.ingredients.push(action.payload);
     },
+
     addBuns(state, action) {
       state.constructorItems.bun = action.payload;
     },
+
     deleteIngredient(state, action) {
       state.constructorItems.ingredients =
         state.constructorItems.ingredients.filter(
           (element) => element._id !== action.payload
         );
-    }
+    },
+    downIngredient(state, action) {},
 
-    // upIngredient(state, action) {
-    //   state.constructorItems.ingredients = state.constructorItems.ingredients.splice(0, 1, action.payload);
-    // }
+    upIngredient(state, action) {}
   },
 
   extraReducers: (builder) => {
+    //register
+    builder.addCase(fetchPostUserData.pending, (state, action) => {
+      state.isLoading = true;
+    });
+
+    builder.addCase(fetchPostUserData.fulfilled, (state, action) => {
+      state.isAuthenticated = true;
+    });
+
+    builder.addCase(fetchPostUserData.rejected, (state, action) => {
+      state.isLoading = false;
+    });
+
+    //login
+    builder.addCase(fetchPostLoginUser.pending, (state, action) => {
+      state.isLoading = true;
+    });
+
+    builder.addCase(fetchPostLoginUser.fulfilled, (state, action) => {
+      if (!action.payload) {
+        return;
+      }
+      state.isAuthenticated = true;
+      state.user = {
+        email: action.payload.user.email,
+        name: action.payload.user.name
+      };
+      state.isLoading = false;
+    });
+
+    builder.addCase(fetchPostLoginUser.rejected, (state, action) => {
+      state.isLoading = false;
+    });
+
     //Feeds
     builder.addCase(fetchFeeds.pending, (state, action) => {
       state.isLoading = true;
@@ -99,6 +172,7 @@ const userSlice = createSlice({
 
     builder.addCase(fetchFeeds.fulfilled, (state, action) => {
       state.feed = action.payload;
+      state.isAuthenticated = true;
     });
 
     builder.addCase(fetchFeeds.rejected, (state, action) => {
@@ -120,23 +194,24 @@ const userSlice = createSlice({
     });
 
     //user
-    builder.addCase(fetchUser.pending, (state, action) => {
-      state.isLoading = false;
-    });
+    // builder.addCase(fetchUser.pending, (state, action) => {
+    //   state.isLoading = false;
+    // });
 
-    builder.addCase(
-      fetchUser.fulfilled,
-      (state, action: PayloadAction<{ user: TUser }>) => {
-        state.isLoading = true;
-        state.user = action.payload;
-      }
-    );
+    // builder.addCase(
+    //   fetchUser.fulfilled,
+    //   (state, action: PayloadAction<{ user: TUser }>) => {
+    //     state.user = action.payload;
+    //     state.isAuthenticated = true;
+    //   }
+    // );
 
-    builder.addCase(fetchUser.rejected, (state, action) => {
-      state.isAuthCheked = false;
-    });
+    // builder.addCase(fetchUser.rejected, (state, action) => {
+    //   state.isAuthCheked = false;
+    // });
   }
 });
 
-export const { addIngredient, addBuns, deleteIngredient } = userSlice.actions;
+export const { addIngredient, addBuns, deleteIngredient, downIngredient } =
+  userSlice.actions;
 export default userSlice.reducer;

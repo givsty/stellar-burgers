@@ -3,12 +3,10 @@ import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser } from '../../services/reducers/userSlice';
 import { AppDispatch, RootState } from 'src/services/store';
+import { useAppSelector } from '../../components/hooks/redux';
 
 export const Profile: FC = () => {
-  const user = {
-    name: '',
-    email: ''
-  };
+  const user = useAppSelector((state) => state.user);
   const [formValue, setFormValue] = useState({
     name: user.name,
     email: user.email,

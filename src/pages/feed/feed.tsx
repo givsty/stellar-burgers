@@ -3,6 +3,7 @@ import { FeedUI } from '@ui-pages';
 import { FC, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../components/hooks/redux';
 import { fetchFeeds } from '../../services/reducers/userSlice';
+import { getFeedsApi } from '@api';
 
 export const Feed: FC = () => {
   const dispatch = useAppDispatch();
@@ -12,9 +13,13 @@ export const Feed: FC = () => {
     dispatch(fetchFeeds());
   }, [dispatch]);
 
+  async function updateGetFeeds() {
+    getFeedsApi();
+  }
+
   if (!orders.length) {
     return <Preloader />;
   }
 
-  return <FeedUI orders={orders} handleGetFeeds={() => {}} />;
+  return <FeedUI orders={orders} handleGetFeeds={updateGetFeeds} />;
 };
