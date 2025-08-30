@@ -11,7 +11,6 @@ export const Login: FC = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const isAuth = useAppSelector((state) => state.isAuthenticated);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();

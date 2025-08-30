@@ -10,12 +10,13 @@ interface ProtectedRouteProps {
 
 export const ProtectedRoute: FC<ProtectedRouteProps> = ({ children }) => {
   const isAuthenticated = useAppSelector((state) => state.isAuthenticated);
+  const token = localStorage.getItem('token');
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(fetchUser());
-  });
-  // is Authenticated пока не активная раскоментировать после того как будет готов настоящий токен
-  if (!isAuthenticated) {
+  }, [dispatch]);
+  // is Authenticated пока не активная раскомментировать после того как будет готов настоящий токен
+  if (!isAuthenticated && !token) {
     return <Navigate replace to='/login' />;
   }
 

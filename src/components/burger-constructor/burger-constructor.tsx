@@ -2,21 +2,28 @@ import { FC, useEffect, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { RootState } from '../../services/store';
-import { fetchIngredients, fetchUser } from '../../services/reducers/userSlice';
+import {
+  fetchIngredients,
+  fetchPostOrder,
+  fetchUser
+} from '../../services/reducers/userSlice';
 import { getIngredientsApi } from '@api';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const constructorItems = useAppSelector((state) => state.constructorItems);
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
   const orderRequest = false;
-
   const orderModalData = null;
-
+  const orders = useAppSelector((state) => state.orders);
   const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) return;
+    dispatch(fetchPostOrder(orders));
   };
+
   const closeOrderModal = () => {};
 
   const price = useMemo(

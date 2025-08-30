@@ -1,8 +1,10 @@
 import {
+  fetchWithRefresh,
   getFeedsApi,
   getIngredientsApi,
   getUserApi,
   loginUserApi,
+  orderBurgerApi,
   refreshToken,
   registerUserApi,
   TLoginData,
@@ -22,10 +24,10 @@ interface userState {
   ingredients: TIngredient[];
   isAuthCheked: boolean;
   isAuthenticated: boolean | undefined;
-  data: {};
+  orderData: TOrder;
   loginUserError: null;
   loginUserRequest: boolean;
-  orders: TOrder[];
+  orders: string[];
   feed: {
     total: number;
     totalToday: number;
@@ -49,7 +51,15 @@ const initialState: userState = {
   ingredients: [],
   isAuthCheked: false,
   isAuthenticated: false,
-  data: {},
+  orderData: {
+    _id: '',
+    status: '',
+    name: '',
+    createdAt: '',
+    updatedAt: '',
+    number: 0,
+    ingredients: []
+  },
   loginUserError: null,
   loginUserRequest: false,
   feed: {
@@ -81,6 +91,18 @@ export const fetchPostUserData = createAsyncThunk(
   }
 );
 
+export const fetchPostOrder = createAsyncThunk(
+  'fetchPostOrder/order',
+  async (data: string[]) => {
+    try {
+      const response = await orderBurgerApi(data);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 export const fetchPostLoginUser = createAsyncThunk(
   'fetchPostLoginUser/userData',
   async (data: TLoginData, { dispatch, rejectWithValue }) => {
@@ -93,7 +115,13 @@ export const fetchPostLoginUser = createAsyncThunk(
     }
   }
 );
-
+export const fetchLogoutUser = createAsyncThunk(
+  'fetchLogoutUser/userData',
+  async () => {
+    try {
+    } catch (error) {}
+  }
+);
 export const fetchUser = createAsyncThunk('users/fetchUser', async () =>
   getUserApi()
 );
@@ -111,6 +139,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    addOrder(state, action) {},
     addIngredient(state, action) {
       state.constructorItems.ingredients.push(action.payload);
     },
@@ -125,12 +154,42 @@ const userSlice = createSlice({
           (element) => element._id !== action.payload
         );
     },
-    downIngredient(state, action) {},
+    downIngredient(state, action) {
+      const initiaConstructorItems = state.constructorItems.ingredients;
+      [
+        initiaConstructorItems[action.payload],
+        initiaConstructorItems[action.payload + 1]
+      ] = [
+        initiaConstructorItems[action.payload + 1],
+        initiaConstructorItems[action.payload]
+      ];
+      state.constructorItems.ingredients = initiaConstructorItems
+    },
 
-    upIngredient(state, action) {}
+    upIngredient(state, action) {
+      const initiaConstructorItems = state.constructorItems.ingredients;
+      [
+        initiaConstructorItems[action.payload],
+        initiaConstructorItems[action.payload - 1]
+      ] = [
+        initiaConstructorItems[action.payload - 1],
+        initiaConstructorItems[action.payload]
+      ];
+      state.constructorItems.ingredients = initiaConstructorItems
+    }
   },
 
   extraReducers: (builder) => {
+    //order
+    builder.addCase(fetchPostOrder.pending, (state, action) => {
+      state.isLoading = true;
+    });
+
+    builder.addCase(fetchPostOrder.fulfilled, (state, action) => {
+      if (!action.payload) return;
+      state.orders.push();
+    });
+
     //register
     builder.addCase(fetchPostUserData.pending, (state, action) => {
       state.isLoading = true;
@@ -193,25 +252,24 @@ const userSlice = createSlice({
       state.isLoading = false;
     });
 
-    //user
-    // builder.addCase(fetchUser.pending, (state, action) => {
-    //   state.isLoading = false;
-    // });
+    //get user
+    builder.addCase(fetchUser.pending, (state, action: PayloadAction) => {
+      state.isLoading = false;
+    });
 
-    // builder.addCase(
-    //   fetchUser.fulfilled,
-    //   (state, action: PayloadAction<{ user: TUser }>) => {
-    //     state.user = action.payload;
-    //     state.isAuthenticated = true;
-    //   }
-    // );
+    builder.addCase(
+      fetchUser.fulfilled,
+      (state, action: PayloadAction<{ user: TUser }>) => {
+        state.user = action.payload.user;
+      }
+    );
 
-    // builder.addCase(fetchUser.rejected, (state, action) => {
-    //   state.isAuthCheked = false;
-    // });
+    builder.addCase(fetchUser.rejected, (state, action) => {
+      state.isAuthCheked = false;
+    });
   }
 });
 
-export const { addIngredient, addBuns, deleteIngredient, downIngredient } =
+export const { addIngredient, addBuns, deleteIngredient, downIngredient, upIngredient } =
   userSlice.actions;
 export default userSlice.reducer;

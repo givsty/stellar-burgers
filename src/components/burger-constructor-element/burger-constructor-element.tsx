@@ -4,7 +4,8 @@ import { BurgerConstructorElementProps } from './type';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import {
   deleteIngredient,
-  downIngredient
+  downIngredient,
+  upIngredient
 } from '../../services/reducers/userSlice';
 
 export const BurgerConstructorElement: FC<BurgerConstructorElementProps> = memo(
@@ -19,7 +20,7 @@ export const BurgerConstructorElement: FC<BurgerConstructorElementProps> = memo(
     };
 
     const handleMoveUp = () => {
-      console.log('вверх');
+      dispatch(upIngredient(index))
     };
 
     const handleClose = () => {

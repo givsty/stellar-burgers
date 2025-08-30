@@ -17,7 +17,8 @@ import {
   FeedInfo,
   IngredientDetails,
   Modal,
-  OrderInfo
+  OrderInfo,
+  OrderCard
 } from '@components';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route';
@@ -82,10 +83,12 @@ const App = () => {
         />
         <Route path='*' element={<NotFound404 />} />
         <Route
-          path='/profile/orders/:number'
+          path='/profile/orders/:orderId'
           element={
             <ProtectedRoute>
-              <OrderInfo />
+              <Modal title='' onClose={onClose}>
+                <OrderInfo />
+              </Modal>
             </ProtectedRoute>
           }
         />
