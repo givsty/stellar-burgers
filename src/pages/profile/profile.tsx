@@ -9,9 +9,9 @@ export const Profile: FC = () => {
   const user = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(fetchUser())
+    dispatch(fetchUser());
   }, [dispatch]);
-  
+
   const [formValue, setFormValue] = useState({
     name: user.name,
     email: user.email,

@@ -10,6 +10,7 @@ export const Feed: FC = () => {
   const dispatch = useAppDispatch();
   const orders = useAppSelector((state) => state.feed.orders);
   const isLoading = useAppSelector((state) => state.isLoading);
+
   useEffect(() => {
     dispatch(fetchFeeds());
   }, [dispatch]);

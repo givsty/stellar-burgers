@@ -11,6 +11,7 @@ export const Login: FC = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const isAuthenticated = useAppSelector((state) => state.isAuthenticated);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
@@ -27,7 +28,6 @@ export const Login: FC = () => {
         if (!response) {
           return '';
         }
-        localStorage.setItem('token', response.accessToken);
       })
       .finally(() => {
         navigate('/profile');

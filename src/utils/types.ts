@@ -37,4 +37,8 @@ export type TUser = {
   name: string;
 };
 
+export interface IUserOrder {
+  [index: string]: string[]
+}
+
 export type TTabMode = 'bun' | 'sauce' | 'main';

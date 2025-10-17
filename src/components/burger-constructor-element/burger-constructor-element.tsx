@@ -11,16 +11,13 @@ import {
 export const BurgerConstructorElement: FC<BurgerConstructorElementProps> = memo(
   ({ ingredient, index, totalItems }) => {
     const dispatch = useAppDispatch();
-    const ingredients = useAppSelector(
-      (state) => state.constructorItems.ingredients
-    );
 
     const handleMoveDown = () => {
       dispatch(downIngredient(index));
     };
 
     const handleMoveUp = () => {
-      dispatch(upIngredient(index))
+      dispatch(upIngredient(index));
     };
 
     const handleClose = () => {

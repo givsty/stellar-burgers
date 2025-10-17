@@ -9,7 +9,7 @@ import {
   Register,
   ResetPassword
 } from '@pages';
-import '../../index.css';
+import '../../index';
 import styles from './app.module.css';
 
 import {
