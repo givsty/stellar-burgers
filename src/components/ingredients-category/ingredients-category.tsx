@@ -2,8 +2,9 @@ import { forwardRef, useEffect, useMemo } from 'react';
 import { TIngredientsCategoryProps } from './type';
 import { TIngredient } from '@utils-types';
 import { IngredientsCategoryUI } from '../ui/ingredients-category';
-import { fetchIngredients } from '../../services/reducers/userSlice';
+import { fetchIngredients } from '../../services/reducers/constructorSlice';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import { selectorIngredients } from '../../services/reducers/constructorSlice';
 
 export const IngredientsCategory = forwardRef<
   HTMLUListElement,
@@ -11,7 +12,7 @@ export const IngredientsCategory = forwardRef<
 >(({ title, titleRef, ingredients }, ref) => {
   /** TODO: взять переменную из стора */
   const dispatch = useAppDispatch();
-  const items = useAppSelector((state) => state.ingredients);
+  const items = useAppSelector(selectorIngredients);
   useEffect(() => {
     dispatch(fetchIngredients());
   }, []);

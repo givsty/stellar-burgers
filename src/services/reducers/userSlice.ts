@@ -27,25 +27,13 @@ import { error } from 'console';
 interface userState {
   isLoading: boolean;
   user: TUser;
-  ingredients: TIngredient[];
   isAuthCheked: boolean;
   isAuthenticated: boolean;
   orderData: TOrder | null;
   loginUserError: null;
   loginUserRequest: boolean;
-  order: string[];
   ordersUser: TOrder[];
   orderNumber: number | null;
-  feed: {
-    total: number;
-    totalToday: number;
-    success: boolean;
-    orders: TOrder[];
-  };
-  constructorItems: {
-    bun: TIngredient;
-    ingredients: TConstructorIngredient[];
-  };
 }
 
 const initialState: userState = {
@@ -56,35 +44,11 @@ const initialState: userState = {
   },
   orderNumber: null,
   ordersUser: [],
-  ingredients: [],
   isAuthCheked: false,
   isAuthenticated: false,
   orderData: null,
   loginUserError: null,
   loginUserRequest: false,
-  feed: {
-    total: 0,
-    totalToday: 0,
-    success: false,
-    orders: []
-  },
-  order: [],
-  constructorItems: {
-    bun: {
-      _id: '',
-      name: '',
-      type: '',
-      proteins: 0,
-      fat: 0,
-      carbohydrates: 0,
-      calories: 0,
-      price: 0,
-      image: '',
-      image_large: '',
-      image_mobile: ''
-    },
-    ingredients: []
-  }
 };
 
 //Регистрация пользователя
@@ -97,19 +61,6 @@ export const fetchPostUserData = createAsyncThunk(
       return response.success;
     } catch (error) {
       rejectWithValue(error);
-      console.log(error);
-    }
-  }
-);
-
-//Отправка заказа
-export const fetchPostOrder = createAsyncThunk(
-  'fetchPostOrder/order',
-  async (data: string[]) => {
-    try {
-      const response = await orderBurgerApi(data);
-      return response;
-    } catch (error) {
       console.log(error);
     }
   }
@@ -141,16 +92,6 @@ export const fetchUser = createAsyncThunk('users/fetchUser', async () => {
   }
 });
 
-//Получение ингредиентов
-export const fetchIngredients = createAsyncThunk(
-  'ingredients/fetchIngredients',
-  async () => getIngredientsApi()
-);
-
-//Получение всех заказов
-export const fetchFeeds = createAsyncThunk('feed/fetchFeeds', async () =>
-  getFeedsApi()
-);
 
 //Выход
 export const fetchUserLogout = createAsyncThunk(
@@ -179,70 +120,16 @@ export const fetchOrderById = createAsyncThunk(
   }
 );
 
-//Получение заказов пользователя
-export const fetchUserOrders = createAsyncThunk('fetchUserOrders', async () =>
-  getOrdersApi()
-);
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    addOrder(state, action) {
-      state.order.push(action.payload);
-    },
-    addIngredient(state, action) {
-      state.constructorItems.ingredients.push(action.payload);
-    },
-
     fetchUserLogout(state, action) {
       state.isAuthenticated = false;
     },
-
-    addBuns(state, action) {
-      state.constructorItems.bun = action.payload;
-    },
-
-    deleteIngredient(state, action) {
-      state.constructorItems.ingredients =
-        state.constructorItems.ingredients.filter(
-          (element) => element._id !== action.payload
-        );
-    },
-    downIngredient(state, action) {
-      const initiaConstructorItems = state.constructorItems.ingredients;
-      [
-        initiaConstructorItems[action.payload],
-        initiaConstructorItems[action.payload + 1]
-      ] = [
-        initiaConstructorItems[action.payload + 1],
-        initiaConstructorItems[action.payload]
-      ];
-      state.constructorItems.ingredients = initiaConstructorItems;
-    },
-
-    upIngredient(state, action) {
-      const initiaConstructorItems = state.constructorItems.ingredients;
-      [
-        initiaConstructorItems[action.payload],
-        initiaConstructorItems[action.payload - 1]
-      ] = [
-        initiaConstructorItems[action.payload - 1],
-        initiaConstructorItems[action.payload]
-      ];
-      state.constructorItems.ingredients = initiaConstructorItems;
-    }
   },
 
   extraReducers: (builder) => {
-    //order
-    builder.addCase(fetchPostOrder.pending, (state, action) => {
-      state.isLoading = true;
-    });
-
-    builder.addCase(fetchPostOrder.fulfilled, (state, action) => {
-      if (!action.payload) return;
-      state.orderNumber = action.payload.order.number;
-    });
 
     //order by id
     builder.addCase(fetchOrderById.pending, (state, action) => {
@@ -292,33 +179,6 @@ const userSlice = createSlice({
       state.isLoading = false;
     });
 
-    //Feeds
-    builder.addCase(fetchFeeds.pending, (state, action) => {
-      state.isLoading = true;
-    });
-
-    builder.addCase(fetchFeeds.fulfilled, (state, action) => {
-      state.feed = action.payload;
-    });
-
-    builder.addCase(fetchFeeds.rejected, (state, action) => {
-      state.isLoading = false;
-    });
-
-    //Ingredients
-    builder.addCase(fetchIngredients.pending, (state, action) => {
-      state.isLoading = true;
-    });
-
-    builder.addCase(fetchIngredients.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.ingredients = action.payload;
-    });
-
-    builder.addCase(fetchIngredients.rejected, (state, action) => {
-      state.isLoading = false;
-    });
-
     //get user
     builder.addCase(fetchUser.pending, (state, action: PayloadAction) => {
       state.isLoading = false;
@@ -337,27 +197,8 @@ const userSlice = createSlice({
       state.isAuthenticated = false;
     });
 
-    //userOrders
-    builder.addCase(fetchUserOrders.pending, (state, action) => {
-      state.isLoading = true;
-    });
-
-    builder.addCase(fetchUserOrders.fulfilled, (state, action) => {
-      action.payload ? (state.ordersUser = action.payload) : '';
-    });
-
-    builder.addCase(fetchUserOrders.rejected, (state, action) => {
-      state.isLoading = false;
-    });
   }
 });
 
-export const {
-  addIngredient,
-  addBuns,
-  deleteIngredient,
-  downIngredient,
-  upIngredient,
-  addOrder
-} = userSlice.actions;
+
 export default userSlice.reducer;

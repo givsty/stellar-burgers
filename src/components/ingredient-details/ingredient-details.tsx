@@ -3,11 +3,13 @@ import { Preloader } from '../ui/preloader';
 import { IngredientDetailsUI } from '../ui/ingredient-details';
 import { useParams } from 'react-router-dom';
 import { useAppSelector } from '../hooks/redux';
+import { useSelector } from '../../services/store';
+import { selectorIngredients } from '../../services/reducers/constructorSlice';
 
 export const IngredientDetails: FC = () => {
   const { ingredientId } = useParams<{ ingredientId: string }>();
 
-  const ingredientData = useAppSelector((state) => state.ingredients).filter(
+  const ingredientData = useSelector(selectorIngredients).filter(
     (elemet) => elemet._id == ingredientId
   )[0];
   if (!ingredientData) {

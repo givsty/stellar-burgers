@@ -4,13 +4,16 @@ import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
 import { useParams } from 'react-router-dom';
 import { useAppSelector } from '../hooks/redux';
+import { useSelector } from '../../services/store';
+import { selectorIngredients } from '../../services/reducers/constructorSlice';
+import { selectFeedOrders } from '../../services/reducers/feedSlice';
 
 export const OrderInfo: FC = () => {
   const { orderId } = useParams<{ orderId: string }>();
-  const orderData = useAppSelector((state) => state.feed.orders).find(
+  const orderData = useSelector(selectFeedOrders).find(
     (order) => order.number === Number(orderId)
   );
-  const ingredients = useAppSelector((state) => state.ingredients);
+  const ingredients = useSelector(selectorIngredients);
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;

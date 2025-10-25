@@ -8,7 +8,7 @@ import {
   addBuns,
   addIngredient,
   addOrder
-} from '../../services/reducers/userSlice';
+} from '../../services/reducers/constructorSlice';
 
 export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
   ({ ingredient, count }) => {

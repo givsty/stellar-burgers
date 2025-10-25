@@ -3,33 +3,30 @@ import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { RootState } from '../../services/store';
 import {
-  fetchIngredients,
-  fetchOrderById,
   fetchPostOrder,
-  fetchUser
-} from '../../services/reducers/userSlice';
+} from '../../services/reducers/constructorSlice';
 import { getIngredientsApi } from '@api';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from '../../services/store';
+import { selectBun, selectConstructorItems, selectOrder } from '../../services/reducers/constructorSlice';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
   const orderRequest = false;
-  const orderNumber = useAppSelector(state => state.orderNumber)
-  const constructorItems = useAppSelector((state) => state.constructorItems);
-  const orderModalData = useAppSelector((state) => state.orderData)
-  const order = useAppSelector((state) => state.order);
+  const constructorItems = useSelector(selectConstructorItems);
+  const orderModalData = null
+  const order = useAppSelector(selectOrder);
   const constructorIngredientsBun = useAppSelector(
-    (state) => state.constructorItems.bun
+    selectBun
   );
 
   const onOrderClick = () => {
     const orderData = [...order, constructorIngredientsBun._id];
     console.log(orderData);
     dispatch(fetchPostOrder(orderData))
-    orderNumber ? dispatch(fetchOrderById(orderNumber)) : ''
   };
 
   const closeOrderModal = () => {
