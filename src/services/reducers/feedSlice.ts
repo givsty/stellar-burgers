@@ -30,9 +30,9 @@ const feedSlice = createSlice({
   reducers: {
 
   },
-  selectors: {
-    selectFeedOrders: (state)=> state.feed.orders,
-  },
+  // selectors: {
+  //   selectFeedOrders: (state)=> state.feed.orders,
+  // },
   extraReducers: (builder) => {
     //Feeds
     builder.addCase(fetchFeeds.pending, (state, action) => {
@@ -46,5 +46,5 @@ const feedSlice = createSlice({
     });
   }
 })
-export const {selectFeedOrders}= feedSlice.selectors
+
 export default feedSlice.reducer

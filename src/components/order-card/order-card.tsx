@@ -7,14 +7,13 @@ import { OrderCardUI } from '../ui/order-card';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { fetchIngredients } from '../../services/reducers/constructorSlice';
 import { useSelector } from '../../services/store';
-import { selectorIngredients } from '../../services/reducers/constructorSlice';
 
 const maxIngredients = 6;
 
 export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
   const location = useLocation();
   const dispatch = useAppDispatch();
-  const ingredients = useSelector(selectorIngredients);
+  const ingredients = useSelector(state => state.constructor.ingredients);
 
   useEffect(() => {
     dispatch(fetchIngredients());

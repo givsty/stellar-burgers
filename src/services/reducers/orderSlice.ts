@@ -24,9 +24,9 @@ const orderSlice = createSlice({
   reducers: {
 
   },
-  selectors: {
-    selectUserOrders: (state)=> state.ordersUser 
-  },
+  // selectors: {
+  //   selectUserOrders: (state)=> state.ordersUser 
+  // },
   extraReducers(builder) {
     builder.addCase(fetchUserOrders.pending, (state, action) => {
       state.isLoading = true;
@@ -41,5 +41,5 @@ const orderSlice = createSlice({
     });
   },
 })
-export const {selectUserOrders} = orderSlice.selectors
+
 export default orderSlice.reducer

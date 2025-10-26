@@ -5,11 +5,10 @@ import { useAppDispatch, useAppSelector } from '../../components/hooks/redux';
 import { fetchFeeds } from '../../services/reducers/feedSlice';
 import { getFeedsApi } from '@api';
 import { TOrder } from '@utils-types';
-import { selectFeedOrders } from '../../services/reducers/feedSlice';
 
 export const Feed: FC = () => {
   const dispatch = useAppDispatch();
-  const orders = useAppSelector(selectFeedOrders);
+  const orders = useAppSelector(state => state.feed.feed.orders);
   // const isLoading = useAppSelector((state) => state.isLoading);
   console.log(orders)
   useEffect(() => {

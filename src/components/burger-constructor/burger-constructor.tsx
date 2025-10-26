@@ -9,20 +9,16 @@ import { getIngredientsApi } from '@api';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from '../../services/store';
-import { selectBun, selectConstructorItems, selectOrder } from '../../services/reducers/constructorSlice';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
   const orderRequest = false;
-  const constructorItems = useSelector(selectConstructorItems);
+  const constructorItems = useAppSelector(state=> state.constructor.constructorItems);
   const orderModalData = null
-  const order = useAppSelector(selectOrder);
-  const constructorIngredientsBun = useAppSelector(
-    selectBun
-  );
-
+  const order = useAppSelector(state => state.constructor.order);
+  const constructorIngredientsBun = useAppSelector(state => state.constructor.constructorItems.bun);
   const onOrderClick = () => {
     const orderData = [...order, constructorIngredientsBun._id];
     console.log(orderData);

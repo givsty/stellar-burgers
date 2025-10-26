@@ -4,14 +4,17 @@ import { useInView } from 'react-intersection-observer';
 import { TIngredient, TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { fetchIngredients, selectorIngredients } from '../../services/reducers/constructorSlice';
+import { fetchIngredients } from '../../services/reducers/constructorSlice';
 import { getFeedsApi, getOrdersApi, getUserApi } from '@api';
+import { useSelector } from '../../services/store';
 
 export const BurgerIngredients: FC = () => {
   const dispatch = useAppDispatch();
-  const ingredients = useAppSelector(state => state.constructor.ingredients);
+  const ingredients = useSelector(state => state.constructor.ingredients);
+  useEffect(()=>{
+    dispatch(fetchIngredients())
+  }, [])
   console.log(ingredients)
-  dispatch(fetchIngredients())
   const buns: TIngredient[] = ingredients.filter(
     (element) => element.type !== 'sauce' && element.type !== 'main'
   );

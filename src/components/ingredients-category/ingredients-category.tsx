@@ -4,7 +4,6 @@ import { TIngredient } from '@utils-types';
 import { IngredientsCategoryUI } from '../ui/ingredients-category';
 import { fetchIngredients } from '../../services/reducers/constructorSlice';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { selectorIngredients } from '../../services/reducers/constructorSlice';
 
 export const IngredientsCategory = forwardRef<
   HTMLUListElement,
@@ -12,7 +11,7 @@ export const IngredientsCategory = forwardRef<
 >(({ title, titleRef, ingredients }, ref) => {
   /** TODO: взять переменную из стора */
   const dispatch = useAppDispatch();
-  const items = useAppSelector(selectorIngredients);
+  const items = useAppSelector(state => state.constructor.ingredients);
   useEffect(() => {
     dispatch(fetchIngredients());
   }, []);

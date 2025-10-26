@@ -4,12 +4,12 @@ import { IngredientDetailsUI } from '../ui/ingredient-details';
 import { useParams } from 'react-router-dom';
 import { useAppSelector } from '../hooks/redux';
 import { useSelector } from '../../services/store';
-import { selectorIngredients } from '../../services/reducers/constructorSlice';
+
 
 export const IngredientDetails: FC = () => {
   const { ingredientId } = useParams<{ ingredientId: string }>();
 
-  const ingredientData = useSelector(selectorIngredients).filter(
+  const ingredientData = useSelector(state => state.constructor.ingredients).filter(
     (elemet) => elemet._id == ingredientId
   )[0];
   if (!ingredientData) {

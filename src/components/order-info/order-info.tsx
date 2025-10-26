@@ -5,15 +5,14 @@ import { TIngredient } from '@utils-types';
 import { useParams } from 'react-router-dom';
 import { useAppSelector } from '../hooks/redux';
 import { useSelector } from '../../services/store';
-import { selectorIngredients } from '../../services/reducers/constructorSlice';
-import { selectFeedOrders } from '../../services/reducers/feedSlice';
+
 
 export const OrderInfo: FC = () => {
   const { orderId } = useParams<{ orderId: string }>();
-  const orderData = useSelector(selectFeedOrders).find(
+  const orderData = useSelector(state => state.feed.feed.orders).find(
     (order) => order.number === Number(orderId)
   );
-  const ingredients = useSelector(selectorIngredients);
+  const ingredients = useSelector(state => state.constructor.ingredients);
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;

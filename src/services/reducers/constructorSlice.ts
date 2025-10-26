@@ -36,7 +36,6 @@ const initialState: ConstructorState = {
 export const fetchIngredients = createAsyncThunk(
   'ingredients/fetchIngredients',
   async () =>{
-    
     try {
       const result = await getIngredientsApi()
       return result
@@ -104,19 +103,19 @@ const constructorSlice = createSlice({
       state.constructorItems.ingredients = initiaConstructorItems;
     }
   },
-  selectors: {
-    selectConstructorItems: (state) => state.constructorItems,
-    selectOrder: (state) => state.order,
-    selectBun: (state) => state.constructorItems.bun,
-    selectorIngredients: (state) => state.ingredients
-  },
+  // selectors: {
+  //   selectConstructorItems: (state) => state.constructorItems,
+  //   selectOrder: (state) => state.order,
+  //   selectBun: (state) => state.constructorItems.bun,
+  //   selectorIngredients: (state) => state.ingredients
+  // },
   extraReducers: (builder) => {
     //Ingredients
     builder.addCase(fetchIngredients.pending, (state, action) => {});
 
     builder.addCase(fetchIngredients.fulfilled, (state, action) => {
-      if(!action.payload) return
-      state.ingredients = action.payload;
+      state.ingredients = action.payload || [];
+      console.log(action.payload)
     });
 
     builder.addCase(fetchIngredients.rejected, (state, action) => {});
@@ -132,12 +131,12 @@ const constructorSlice = createSlice({
   }
 });
 
-export const {
-  selectConstructorItems,
-  selectOrder,
-  selectBun,
-  selectorIngredients
-} = constructorSlice.selectors;
+// export const {
+//   selectConstructorItems,
+//   selectOrder,
+//   selectBun,
+//   selectorIngredients
+// } = constructorSlice.selectors;
 
 export const {
   addBuns,
