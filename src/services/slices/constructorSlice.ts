@@ -35,12 +35,12 @@ const initialState: ConstructorState = {
 //Получение ингредиентов
 export const fetchIngredients = createAsyncThunk(
   'ingredients/fetchIngredients',
-  async () => {
+  async () =>{
     try {
-      const result = await getIngredientsApi();
-      return result;
-    } catch (error) {
-      console.log(error);
+      const result = await getIngredientsApi()
+      return result
+    }catch(error) {
+      console.log(error)
     }
   }
 );
@@ -103,38 +103,37 @@ const constructorSlice = createSlice({
       state.constructorItems.ingredients = initiaConstructorItems;
     }
   },
-  // selectors: {
-  //   selectConstructorItems: (state) => state.constructorItems,
-  //   selectOrder: (state) => state.order,
-  //   selectBun: (state) => state.constructorItems.bun,
-  //   selectorIngredients: (state) => state.ingredients
-  // },
+  selectors: {
+    // selectConstructorItems: (state) => state.constructorItems,
+    // selectOrder: (state) => state.order,
+    // selectBun: (state) => state.constructorItems.bun,
+    selectorIngredients: (state) => state.ingredients
+  },
   extraReducers: (builder) => {
     //Ingredients
-    builder.addCase(fetchIngredients.pending, (state, action) => {});
+    builder.addCase(fetchIngredients.pending, (state, action) => {
+      console.log('')
+    });
 
     builder.addCase(fetchIngredients.fulfilled, (state, action) => {
-      state.ingredients = action.payload || [];
-      console.log(action.payload);
+      if(action.payload) {
+        state.ingredients = action.payload
+      }
+      console.log(action.payload)
     });
 
-    builder.addCase(fetchIngredients.rejected, (state, action) => {});
-
-    //order
-    builder.addCase(fetchPostOrder.pending, (state, action) => {});
-
-    builder.addCase(fetchPostOrder.fulfilled, (state, action) => {
-      if (!action.payload) return;
-    });
+    builder.addCase(fetchIngredients.rejected, (state, action) => {
+      console.log(action.error)
+    })
   }
 });
 
-// export const {
-//   selectConstructorItems,
-//   selectOrder,
-//   selectBun,
-//   selectorIngredients
-// } = constructorSlice.selectors;
+export const {
+  // selectConstructorItems,
+  // selectOrder,
+  // selectBun,
+  selectorIngredients
+} = constructorSlice.selectors;
 
 export const {
   addBuns,
