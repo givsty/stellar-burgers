@@ -5,13 +5,14 @@ import { fetchPostLoginUser } from '../../services/reducers/userSlice';
 import { getUserApi } from '@api';
 import { Preloader } from '@ui';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { useSelector } from '../../services/store';
 
 export const Login: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
