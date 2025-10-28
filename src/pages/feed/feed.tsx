@@ -8,8 +8,8 @@ import { TOrder } from '@utils-types';
 
 export const Feed: FC = () => {
   const dispatch = useAppDispatch();
-  const orders = useAppSelector((state) => state.feed.orders);
-  const isLoading = useAppSelector((state) => state.isLoading);
+  const orders = useAppSelector((state) => state.user.feed.orders);
+  const isLoading = useAppSelector((state) => state.user.isLoading);
 
   useEffect(() => {
     dispatch(fetchFeeds());

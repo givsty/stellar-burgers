@@ -10,8 +10,8 @@ interface ProtectedRouteProps {
 }
 
 export const ProtectedRoute: FC<ProtectedRouteProps> = ({ children }) => {
-  const isAuthenticated = useAppSelector((state) => state.isAuthenticated);
-  const isLoading = useAppSelector((state) => state.isLoading);
+  const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
+  const isLoading = useAppSelector((state) => state.user.isLoading);
   const token = localStorage.getItem('refreshToken');
 
   if (!isAuthenticated && isLoading) {

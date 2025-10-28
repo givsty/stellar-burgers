@@ -7,9 +7,9 @@ import { useAppSelector } from '../hooks/redux';
 export const IngredientDetails: FC = () => {
   const { ingredientId } = useParams<{ ingredientId: string }>();
 
-  const ingredientData = useAppSelector((state) => state.ingredients).filter(
-    (elemet) => elemet._id == ingredientId
-  )[0];
+  const ingredientData = useAppSelector(
+    (state) => state.user.ingredients
+  ).filter((elemet) => elemet._id == ingredientId)[0];
   if (!ingredientData) {
     return <Preloader />;
   }

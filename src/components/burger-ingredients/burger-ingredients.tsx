@@ -9,7 +9,7 @@ import { getFeedsApi, getOrdersApi, getUserApi } from '@api';
 
 export const BurgerIngredients: FC = () => {
   const dispatch = useAppDispatch();
-  const ingredients = useAppSelector((state) => state.ingredients);
+  const ingredients = useAppSelector((state) => state.user.ingredients);
 
   useEffect(() => {
     dispatch(fetchIngredients());

@@ -7,9 +7,9 @@ import { Preloader } from '@ui';
 
 export const ProfileOrders: FC = () => {
   /** TODO: взять переменную из стора */
-  const orders = useAppSelector((state) => state.ordersUser);
-  const isAuth = useAppSelector(state => state.isAuthCheked)
-  const isLoading = useAppSelector(state => state.isLoading)
+  const orders = useAppSelector((state) => state.user.ordersUser);
+  const isAuth = useAppSelector((state) => state.user.isAuthCheked);
+  const isLoading = useAppSelector((state) => state.user.isLoading);
   const dispatch = useAppDispatch();
 
   dispatch(fetchUserOrders());
@@ -17,6 +17,6 @@ export const ProfileOrders: FC = () => {
   if (!orders.length && isLoading) {
     return <Preloader />;
   }
-  
+
   return <ProfileOrdersUI orders={orders} />;
 };

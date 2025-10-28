@@ -14,8 +14,8 @@ const getOrders = (orders: TOrder[], status: string): number[] =>
 export const FeedInfo: FC = () => {
   /** TODO: взять переменные из стора */
   const dispatch = useAppDispatch();
-  const orders = useAppSelector((state) => state.feed.orders);
-  const feed = useAppSelector((state) => state.feed);
+  const orders = useAppSelector((state) => state.user.feed.orders);
+  const feed = useAppSelector((state) => state.user.feed);
   const readyOrders = getOrders(orders, 'done');
   const pendingOrders = getOrders(orders, 'pending');
 

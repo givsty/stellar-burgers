@@ -107,7 +107,7 @@ export const fetchPostUserData = createAsyncThunk(
 //Отправка заказа
 export const fetchPostOrder = createAsyncThunk(
   'fetchPostOrder/order',
-  async (data: string[]) => {
+  async (data: string[], { dispatch }) => {
     try {
       const response = await orderBurgerApi(data);
       return response;
@@ -192,6 +192,10 @@ const userSlice = createSlice({
     addOrder(state, action) {
       state.order.push(action.payload);
     },
+    clearModalData(state) {
+      state.orderData = null;
+      state.orderResponse = false;
+    },
     addIngredient(state, action) {
       state.constructorItems.ingredients.push(action.payload);
     },
@@ -252,6 +256,7 @@ const userSlice = createSlice({
     //order by id
     builder.addCase(fetchOrderById.pending, (state, action) => {
       state.isLoading = false;
+      state.orderResponse = false;
     });
 
     builder.addCase(fetchOrderById.fulfilled, (state, action) => {
@@ -363,7 +368,8 @@ export const {
   deleteIngredient,
   downIngredient,
   upIngredient,
-  addOrder
+  addOrder,
+  clearModalData
 } = userSlice.actions;
 export const { getOrderState } = userSlice.selectors;
 export default userSlice.reducer;

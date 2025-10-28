@@ -6,7 +6,7 @@ import { AppDispatch, RootState } from 'src/services/store';
 import { useAppDispatch, useAppSelector } from '../../components/hooks/redux';
 
 export const Profile: FC = () => {
-  const user = useAppSelector((state) => state.user);
+  const user = useAppSelector((state) => state.user.user);
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(fetchUser());

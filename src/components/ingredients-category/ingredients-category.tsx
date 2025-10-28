@@ -11,7 +11,7 @@ export const IngredientsCategory = forwardRef<
 >(({ title, titleRef, ingredients }, ref) => {
   /** TODO: взять переменную из стора */
   const dispatch = useAppDispatch();
-  const items = useAppSelector((state) => state.ingredients);
+  const items = useAppSelector((state) => state.user.ingredients);
   useEffect(() => {
     dispatch(fetchIngredients());
   }, []);

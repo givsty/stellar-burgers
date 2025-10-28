@@ -7,10 +7,10 @@ import { useAppSelector } from '../hooks/redux';
 
 export const OrderInfo: FC = () => {
   const { orderId } = useParams<{ orderId: string }>();
-  const orderData = useAppSelector((state) => state.feed.orders).find(
+  const orderData = useAppSelector((state) => state.user.feed.orders).find(
     (order) => order.number === Number(orderId)
   );
-  const ingredients = useAppSelector((state) => state.ingredients);
+  const ingredients = useAppSelector((state) => state.user.ingredients);
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
