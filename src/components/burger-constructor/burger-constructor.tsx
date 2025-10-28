@@ -1,12 +1,13 @@
 import { FC, useEffect, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
-import { RootState } from '../../services/store';
+import { RootState, useSelector } from '../../services/store';
 import {
   fetchIngredients,
   fetchOrderById,
   fetchPostOrder,
-  fetchUser
+  fetchUser,
+  getOrderState
 } from '../../services/reducers/userSlice';
 import { getIngredientsApi } from '@api';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
@@ -16,20 +17,18 @@ export const BurgerConstructor: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const orderRequest = false;
-  const orderNumber = useAppSelector(state => state.orderNumber)
+  const orderRequest = useAppSelector(state => state.orderResponse);
   const constructorItems = useAppSelector((state) => state.constructorItems);
-  const orderModalData = useAppSelector((state) => state.orderData)
+  const orderModalData = useSelector(getOrderState)
   const order = useAppSelector((state) => state.order);
   const constructorIngredientsBun = useAppSelector(
     (state) => state.constructorItems.bun
   );
-
+  console.log(orderModalData)
   const onOrderClick = () => {
+    if(orderRequest && !constructorItems.bun) return ''
     const orderData = [...order, constructorIngredientsBun._id];
-    console.log(orderData);
     dispatch(fetchPostOrder(orderData))
-    orderNumber ? dispatch(fetchOrderById(orderNumber)) : ''
   };
 
   const closeOrderModal = () => {

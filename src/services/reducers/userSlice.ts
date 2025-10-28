@@ -26,6 +26,7 @@ import { error } from 'console';
 
 interface userState {
   isLoading: boolean;
+  orderResponse: boolean;
   user: TUser;
   ingredients: TIngredient[];
   isAuthCheked: boolean;
@@ -54,6 +55,7 @@ const initialState: userState = {
     email: '',
     name: ''
   },
+  orderResponse: false,
   orderNumber: null,
   ordersUser: [],
   ingredients: [],
@@ -232,16 +234,19 @@ const userSlice = createSlice({
       state.constructorItems.ingredients = initiaConstructorItems;
     }
   },
-
+  selectors: {
+    getOrderState: (state) => state.orderData
+  },
   extraReducers: (builder) => {
     //order
     builder.addCase(fetchPostOrder.pending, (state, action) => {
-      state.isLoading = true;
+      state.orderResponse = true;
     });
 
     builder.addCase(fetchPostOrder.fulfilled, (state, action) => {
       if (!action.payload) return;
-      state.orderNumber = action.payload.order.number;
+      state.orderResponse = false;
+      state.orderData = action.payload.order;
     });
 
     //order by id
@@ -360,4 +365,5 @@ export const {
   upIngredient,
   addOrder
 } = userSlice.actions;
+export const { getOrderState } = userSlice.selectors;
 export default userSlice.reducer;
