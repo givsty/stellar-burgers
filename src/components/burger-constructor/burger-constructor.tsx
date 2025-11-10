@@ -13,12 +13,12 @@ export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
   const orderRequest = useAppSelector((state) => state.order.orderRequest);
   const constructorItems = useAppSelector(
-    (state) => state.user.constructorItems
+    (state) => state.constructorSlice.constructorItems
   );
   const orderModalData = useSelector((state) => state.order.orderData);
   const order = useAppSelector((state) => state.user.order);
   const constructorIngredientsBun = useAppSelector(
-    (state) => state.user.constructorItems.bun
+    (state) => state.constructorSlice.constructorItems.bun
   );
   const onOrderClick = () => {
     // if (orderRequest && !constructorItems.bun) return '';

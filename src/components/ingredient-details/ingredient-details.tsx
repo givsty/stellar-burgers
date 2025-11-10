@@ -8,8 +8,8 @@ export const IngredientDetails: FC = () => {
   const { ingredientId } = useParams<{ ingredientId: string }>();
 
   const ingredientData = useAppSelector(
-    (state) => state.user.ingredients
-  ).filter((elemet) => elemet._id == ingredientId)[0];
+    (state) => state.constructorSlice.ingredients
+  ).filter((element) => element._id == ingredientId)[0];
   if (!ingredientData) {
     return <Preloader />;
   }

@@ -1,7 +1,6 @@
 import {
   fetchWithRefresh,
   getFeedsApi,
-  getIngredientsApi,
   getOrderByNumberApi,
   getOrdersApi,
   getUserApi,
@@ -14,20 +13,13 @@ import {
   TRegisterData
 } from '@api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  IUserOrder,
-  TConstructorIngredient,
-  TIngredient,
-  TOrder,
-  TUser
-} from '@utils-types';
+import { TIngredient, TOrder, TUser } from '@utils-types';
 import { setCookie } from '../../utils/cookie';
 import { error } from 'console';
 
 interface userState {
   isLoading: boolean;
   user: TUser;
-  ingredients: TIngredient[];
   isAuthCheked: boolean;
   isAuthenticated: boolean;
   loginUserError: null;
@@ -41,10 +33,6 @@ interface userState {
     success: boolean;
     orders: TOrder[];
   };
-  constructorItems: {
-    bun: TIngredient;
-    ingredients: TConstructorIngredient[];
-  };
 }
 
 const initialState: userState = {
@@ -55,7 +43,6 @@ const initialState: userState = {
   },
   orderNumber: null,
   ordersUser: [],
-  ingredients: [],
   isAuthCheked: false,
   isAuthenticated: false,
   loginUserError: null,
@@ -66,23 +53,7 @@ const initialState: userState = {
     success: false,
     orders: []
   },
-  order: [],
-  constructorItems: {
-    bun: {
-      _id: '',
-      name: '',
-      type: '',
-      proteins: 0,
-      fat: 0,
-      carbohydrates: 0,
-      calories: 0,
-      price: 0,
-      image: '',
-      image_large: '',
-      image_mobile: ''
-    },
-    ingredients: []
-  }
+  order: []
 };
 
 //Регистрация пользователя
@@ -139,12 +110,6 @@ export const fetchUser = createAsyncThunk('users/fetchUser', async () => {
   }
 });
 
-//Получение ингредиентов
-export const fetchIngredients = createAsyncThunk(
-  'ingredients/fetchIngredients',
-  async () => getIngredientsApi()
-);
-
 //Получение всех заказов
 export const fetchFeeds = createAsyncThunk('feed/fetchFeeds', async () =>
   getFeedsApi()
@@ -184,52 +149,7 @@ export const fetchUserOrders = createAsyncThunk('fetchUserOrders', async () =>
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {
-    addOrder(state, action) {
-      state.order.push(action.payload);
-    },
-    addIngredient(state, action) {
-      state.constructorItems.ingredients.push(action.payload);
-    },
-
-    fetchUserLogout(state, action) {
-      state.isAuthenticated = false;
-    },
-
-    addBuns(state, action) {
-      state.constructorItems.bun = action.payload;
-    },
-
-    deleteIngredient(state, action) {
-      state.constructorItems.ingredients =
-        state.constructorItems.ingredients.filter(
-          (element) => element._id !== action.payload
-        );
-    },
-    downIngredient(state, action) {
-      const initiaConstructorItems = state.constructorItems.ingredients;
-      [
-        initiaConstructorItems[action.payload],
-        initiaConstructorItems[action.payload + 1]
-      ] = [
-        initiaConstructorItems[action.payload + 1],
-        initiaConstructorItems[action.payload]
-      ];
-      state.constructorItems.ingredients = initiaConstructorItems;
-    },
-
-    upIngredient(state, action) {
-      const initiaConstructorItems = state.constructorItems.ingredients;
-      [
-        initiaConstructorItems[action.payload],
-        initiaConstructorItems[action.payload - 1]
-      ] = [
-        initiaConstructorItems[action.payload - 1],
-        initiaConstructorItems[action.payload]
-      ];
-      state.constructorItems.ingredients = initiaConstructorItems;
-    }
-  },
+  reducers: {},
   extraReducers: (builder) => {
     //register
     builder.addCase(fetchPostUserData.pending, (state, action) => {
@@ -278,20 +198,6 @@ const userSlice = createSlice({
       state.isLoading = false;
     });
 
-    //Ingredients
-    builder.addCase(fetchIngredients.pending, (state, action) => {
-      state.isLoading = true;
-    });
-
-    builder.addCase(fetchIngredients.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.ingredients = action.payload;
-    });
-
-    builder.addCase(fetchIngredients.rejected, (state, action) => {
-      state.isLoading = false;
-    });
-
     //get user
     builder.addCase(fetchUser.pending, (state, action: PayloadAction) => {
       state.isLoading = false;
@@ -325,12 +231,4 @@ const userSlice = createSlice({
   }
 });
 
-export const {
-  addIngredient,
-  addBuns,
-  deleteIngredient,
-  downIngredient,
-  upIngredient,
-  addOrder
-} = userSlice.actions;
 export default userSlice.reducer;

@@ -10,7 +10,9 @@ export const OrderInfo: FC = () => {
   const orderData = useAppSelector((state) => state.user.feed.orders).find(
     (order) => order.number === Number(orderId)
   );
-  const ingredients = useAppSelector((state) => state.user.ingredients);
+  const ingredients = useAppSelector(
+    (state) => state.constructorSlice.ingredients
+  );
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;

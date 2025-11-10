@@ -5,6 +5,7 @@ import { TConstructorIngredient, TIngredient } from '@utils-types';
 type orderSlice = {
   order: string[];
   ingredients: TIngredient[];
+  isLoadingIngredients: boolean;
   constructorItems: {
     bun: TIngredient;
     ingredients: TConstructorIngredient[];
@@ -13,6 +14,7 @@ type orderSlice = {
 
 const initialState: orderSlice = {
   order: [],
+  isLoadingIngredients: false,
   constructorItems: {
     bun: {
       _id: '',
@@ -32,21 +34,13 @@ const initialState: orderSlice = {
   ingredients: []
 };
 
-//Получение ингредиентов
 export const fetchIngredients = createAsyncThunk(
   'ingredients/fetchIngredients',
-  async () => {
-    try {
-      const result = await getIngredientsApi();
-      return result;
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  async () => getIngredientsApi()
 );
 
 const constructorSlice = createSlice({
-  name: 'constructor',
+  name: 'constructorSlice',
   initialState,
   reducers: {
     addOrder(state, action) {
@@ -92,14 +86,20 @@ const constructorSlice = createSlice({
   },
   extraReducers: (builder) => {
     //Ingredients
-    builder.addCase(fetchIngredients.pending, (state, action) => {});
-
-    builder.addCase(fetchIngredients.fulfilled, (state, action) => {
-      state.ingredients = action.payload || [];
-      console.log(action.payload);
+    builder.addCase(fetchIngredients.pending, (state) => {
+      state.isLoadingIngredients = true;
     });
 
-    builder.addCase(fetchIngredients.rejected, (state, action) => {});
+    builder.addCase(fetchIngredients.fulfilled, (state, action) => {
+      state.isLoadingIngredients = false;
+      state.ingredients = action.payload;
+      state.isLoadingIngredients = false;
+      state.ingredients = action.payload;
+    });
+
+    builder.addCase(fetchIngredients.rejected, (state, action) => {
+      state.isLoadingIngredients = false;
+    });
   }
 });
 
