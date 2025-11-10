@@ -26,12 +26,10 @@ import { error } from 'console';
 
 interface userState {
   isLoading: boolean;
-  orderResponse: boolean;
   user: TUser;
   ingredients: TIngredient[];
   isAuthCheked: boolean;
   isAuthenticated: boolean;
-  orderData: TOrder | null;
   loginUserError: null;
   loginUserRequest: boolean;
   order: string[];
@@ -55,13 +53,11 @@ const initialState: userState = {
     email: '',
     name: ''
   },
-  orderResponse: false,
   orderNumber: null,
   ordersUser: [],
   ingredients: [],
   isAuthCheked: false,
   isAuthenticated: false,
-  orderData: null,
   loginUserError: null,
   loginUserRequest: false,
   feed: {
@@ -192,10 +188,6 @@ const userSlice = createSlice({
     addOrder(state, action) {
       state.order.push(action.payload);
     },
-    clearModalData(state) {
-      state.orderData = null;
-      state.orderResponse = false;
-    },
     addIngredient(state, action) {
       state.constructorItems.ingredients.push(action.payload);
     },
@@ -238,36 +230,7 @@ const userSlice = createSlice({
       state.constructorItems.ingredients = initiaConstructorItems;
     }
   },
-  selectors: {
-    getOrderState: (state) => state.orderData
-  },
   extraReducers: (builder) => {
-    //order
-    builder.addCase(fetchPostOrder.pending, (state, action) => {
-      state.orderResponse = true;
-    });
-
-    builder.addCase(fetchPostOrder.fulfilled, (state, action) => {
-      if (!action.payload) return;
-      state.orderResponse = false;
-      state.orderData = action.payload.order;
-    });
-
-    //order by id
-    builder.addCase(fetchOrderById.pending, (state, action) => {
-      state.isLoading = false;
-      state.orderResponse = false;
-    });
-
-    builder.addCase(fetchOrderById.fulfilled, (state, action) => {
-      if (!action.payload) return;
-      // state.orderData = action.payload
-    });
-
-    builder.addCase(fetchOrderById.rejected, (state, action) => {
-      state.isLoading = false;
-    });
-
     //register
     builder.addCase(fetchPostUserData.pending, (state, action) => {
       state.isLoading = true;
@@ -368,8 +331,6 @@ export const {
   deleteIngredient,
   downIngredient,
   upIngredient,
-  addOrder,
-  clearModalData
+  addOrder
 } = userSlice.actions;
-export const { getOrderState } = userSlice.selectors;
 export default userSlice.reducer;

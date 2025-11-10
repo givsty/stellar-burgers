@@ -2,7 +2,7 @@ import { getIngredientsApi, orderBurgerApi } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient } from '@utils-types';
 
-type ConstructorState = {
+type orderSlice = {
   order: string[];
   ingredients: TIngredient[];
   constructorItems: {
@@ -11,7 +11,7 @@ type ConstructorState = {
   };
 };
 
-const initialState: ConstructorState = {
+const initialState: orderSlice = {
   order: [],
   constructorItems: {
     bun: {
@@ -35,23 +35,10 @@ const initialState: ConstructorState = {
 //Получение ингредиентов
 export const fetchIngredients = createAsyncThunk(
   'ingredients/fetchIngredients',
-  async () =>{
+  async () => {
     try {
-      const result = await getIngredientsApi()
-      return result
-    }catch(error) {
-      console.log(error)
-    }
-  }
-);
-
-//Отправка заказа
-export const fetchPostOrder = createAsyncThunk(
-  'fetchPostOrder/order',
-  async (data: string[]) => {
-    try {
-      const response = await orderBurgerApi(data);
-      return response;
+      const result = await getIngredientsApi();
+      return result;
     } catch (error) {
       console.log(error);
     }
@@ -109,19 +96,10 @@ const constructorSlice = createSlice({
 
     builder.addCase(fetchIngredients.fulfilled, (state, action) => {
       state.ingredients = action.payload || [];
-      console.log(action.payload)
+      console.log(action.payload);
     });
 
     builder.addCase(fetchIngredients.rejected, (state, action) => {});
-
-    //order
-    builder.addCase(fetchPostOrder.pending, (state, action) => {
-      
-    });
-
-    builder.addCase(fetchPostOrder.fulfilled, (state, action) => {
-      if (!action.payload) return;
-    });
   }
 });
 

@@ -6,13 +6,13 @@ import {
   useSelector as selectorHook
 } from 'react-redux';
 import userReducer from './reducers/userSlice';
-// import orderReducer from './reducers/orderSlice';
-import constructorReducer from './reducers/constructorSlice';
+import orderReducer from './reducers/orderSlice';
+// import constructorReducer from './reducers/constructorSlice';
 // Заменить на импорт настоящего редьюсера
 const rootReducer = combineReducers({
   user: userReducer,
-  // order: orderReducer,
-  constructor: constructorReducer,
+  order: orderReducer
+  // constructor: constructorReducer,
 });
 const store = configureStore({
   reducer: rootReducer,
