@@ -16,17 +16,13 @@ const initialState: OrderState = {
 export const fetchPostOrder = createAsyncThunk(
   'fetchPostOrder/order',
   async (data: string[]) => {
-    try {
-      const response = await orderBurgerApi(data);
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
+    const response = await orderBurgerApi(data);
+    return response;
   }
 );
 
 const orderSlice = createSlice({
-  name: 'constructor',
+  name: 'order',
   initialState,
   reducers: {
     clearModalData(state) {
@@ -41,10 +37,11 @@ const orderSlice = createSlice({
     });
 
     builder.addCase(fetchPostOrder.fulfilled, (state, action) => {
-      if (!action.payload) return;
-      state.orderRequest = false;
-      state.orderData = action.payload.order;
+      if (action.payload?.order) {
+        state.orderData = action.payload.order;
+      }
     });
+
     builder.addCase(fetchPostOrder.rejected, (state, action) => {
       state.orderRequest = false;
     });

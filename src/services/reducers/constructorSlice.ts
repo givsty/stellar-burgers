@@ -46,6 +46,7 @@ const constructorSlice = createSlice({
     addOrder(state, action) {
       state.order.push(action.payload);
     },
+
     addIngredient(state, action) {
       state.constructorItems.ingredients.push(action.payload);
     },
@@ -82,6 +83,10 @@ const constructorSlice = createSlice({
         initiaConstructorItems[action.payload]
       ];
       state.constructorItems.ingredients = initiaConstructorItems;
+    },
+
+    clearConstructor(state) {
+      state.order = [];
     }
   },
   extraReducers: (builder) => {
@@ -109,7 +114,8 @@ export const {
   addOrder,
   deleteIngredient,
   upIngredient,
-  downIngredient
+  downIngredient,
+  clearConstructor
 } = constructorSlice.actions;
 
 export default constructorSlice.reducer;

@@ -7,7 +7,7 @@ import { useAppSelector } from '../hooks/redux';
 
 export const OrderInfo: FC = () => {
   const { orderId } = useParams<{ orderId: string }>();
-  const orderData = useAppSelector((state) => state.user.feed.orders).find(
+  const orderData = useAppSelector((state) => state.feedSlice.feed.orders).find(
     (order) => order.number === Number(orderId)
   );
   const ingredients = useAppSelector(
