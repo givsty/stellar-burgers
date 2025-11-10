@@ -4,10 +4,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser } from '../../services/reducers/userSlice';
 import { AppDispatch, RootState } from 'src/services/store';
 import { useAppDispatch, useAppSelector } from '../../components/hooks/redux';
+import { useNavigate } from 'react-router-dom';
 
 export const Profile: FC = () => {
+  const navigate = useNavigate();
   const user = useAppSelector((state) => state.user.user);
+  const isAuth = useAppSelector((state) => state.user.isAuthenticated);
   const dispatch = useAppDispatch();
+
+  if (!isAuth) {
+    navigate('/login');
+  }
+
   useEffect(() => {
     dispatch(fetchUser());
   }, [dispatch]);

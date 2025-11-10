@@ -1,10 +1,12 @@
 import {
+  forgotPasswordApi,
   getOrdersApi,
   getUserApi,
   loginUserApi,
   logoutApi,
   refreshToken,
   registerUserApi,
+  resetPasswordApi,
   TLoginData,
   TRegisterData
 } from '@api';
@@ -13,6 +15,7 @@ import { TOrder, TUser } from '@utils-types';
 import { setCookie } from '../../utils/cookie';
 
 interface userState {
+  isLoadingUserFeeds: boolean
   isLoading: boolean;
   user: TUser;
   isAuthCheked: boolean;
@@ -24,6 +27,7 @@ interface userState {
 }
 
 const initialState: userState = {
+  isLoadingUserFeeds: false,
   isLoading: false,
   user: {
     email: '',
@@ -91,6 +95,18 @@ export const fetchUserLogout = createAsyncThunk(
   }
 );
 
+//Сброс пароля
+export const fetchResetPassword = createAsyncThunk(
+  'fetchResetPassword/user',
+  async (data: { email: string }) => {
+    try {
+      const respone = await forgotPasswordApi(data);
+      return respone;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
 //Получение заказов пользователя
 export const fetchUserOrders = createAsyncThunk('fetchUserOrders', async () =>
   getOrdersApi()
@@ -144,7 +160,7 @@ const userSlice = createSlice({
     });
 
     builder.addCase(fetchUser.rejected, (state, action) => {
-      state.isAuthCheked = false;
+      state.isLoading = false;
     });
 
     //logout
@@ -152,17 +168,23 @@ const userSlice = createSlice({
       state.isAuthenticated = false;
     });
 
+    //Reset password
+    builder.addCase(fetchResetPassword.pending, (state, action) => {});
+    builder.addCase(fetchResetPassword.fulfilled, (state, action) => {});
+    builder.addCase(fetchResetPassword.rejected, (state, action) => {});
+
     //userOrders
     builder.addCase(fetchUserOrders.pending, (state, action) => {
-      state.isLoading = true;
+      state.isLoadingUserFeeds = true;
     });
 
     builder.addCase(fetchUserOrders.fulfilled, (state, action) => {
       action.payload ? (state.ordersUser = action.payload) : '';
+      state.isLoadingUserFeeds = false;
     });
 
     builder.addCase(fetchUserOrders.rejected, (state, action) => {
-      state.isLoading = false;
+      state.isLoadingUserFeeds = false;
     });
   }
 });

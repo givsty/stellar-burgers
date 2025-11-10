@@ -86,7 +86,20 @@ const constructorSlice = createSlice({
     },
 
     clearConstructor(state) {
-      state.order = [];
+      state.constructorItems.ingredients = [];
+      state.constructorItems.bun = {
+        _id: '',
+        name: '',
+        type: '',
+        proteins: 0,
+        fat: 0,
+        carbohydrates: 0,
+        calories: 0,
+        price: 0,
+        image: '',
+        image_large: '',
+        image_mobile: ''
+      };
     }
   },
   extraReducers: (builder) => {
