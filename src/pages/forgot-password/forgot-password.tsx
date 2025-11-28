@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 
 import { forgotPasswordApi } from '@api';
 import { ForgotPasswordUI } from '@ui-pages';
-import { useAppDispatch } from '../../components/hooks/redux';
 import { fetchResetPassword } from '../../services/reducers/userSlice';
+import { useDispatch } from '../../services/store';
 
 export const ForgotPassword: FC = () => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState<Error | null>(null);
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = (e: SyntheticEvent) => {

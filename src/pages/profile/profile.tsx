@@ -1,16 +1,14 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser } from '../../services/reducers/userSlice';
-import { AppDispatch, RootState } from 'src/services/store';
-import { useAppDispatch, useAppSelector } from '../../components/hooks/redux';
+import { useDispatch, useSelector } from '../../services/store';
 import { useNavigate } from 'react-router-dom';
 
 export const Profile: FC = () => {
   const navigate = useNavigate();
-  const user = useAppSelector((state) => state.user.user);
-  const isAuth = useAppSelector((state) => state.user.isAuthenticated);
-  const dispatch = useAppDispatch();
+  const user = useSelector((state) => state.user.user);
+  const isAuth = useSelector((state) => state.user.isAuthenticated);
+  const dispatch = useDispatch();
 
   if (!isAuth) {
     navigate('/login');

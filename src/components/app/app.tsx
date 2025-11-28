@@ -20,20 +20,28 @@ import {
   OrderInfo,
   OrderCard
 } from '@components';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route';
+import { useDispatch } from '../../services/store';
+import { useEffect } from 'react';
+import { fetchIngredients } from '../../services/reducers/constructorSlice';
 
 const App = () => {
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const backgroundLocation = location.state?.background;
+  const dispatch = useDispatch();
+  
   const onClose = () => {
     navigate(-1);
   };
-
+  useEffect(() => {
+    dispatch(fetchIngredients());
+  }, []);
   return (
     <div className={styles.app}>
       <AppHeader />
-      <Routes>
+      <Routes location={location || backgroundLocation}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
         <Route path='/login' element={<Login />} />

@@ -1,17 +1,15 @@
 import { FC, SyntheticEvent, useState } from 'react';
 import { LoginUI } from '@ui-pages';
-import { useAppDispatch, useAppSelector } from '../../components/hooks/redux';
 import { fetchPostLoginUser } from '../../services/reducers/userSlice';
-import { getUserApi } from '@api';
-import { Preloader } from '@ui';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from '../../services/store';
 
 export const Login: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();

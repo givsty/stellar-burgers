@@ -4,9 +4,7 @@ import {
   getUserApi,
   loginUserApi,
   logoutApi,
-  refreshToken,
   registerUserApi,
-  resetPasswordApi,
   TLoginData,
   TRegisterData
 } from '@api';
@@ -15,7 +13,7 @@ import { TOrder, TUser } from '@utils-types';
 import { setCookie } from '../../utils/cookie';
 
 interface userState {
-  isLoadingUserFeeds: boolean
+  isLoadingUserFeeds: boolean;
   isLoading: boolean;
   user: TUser;
   isAuthCheked: boolean;

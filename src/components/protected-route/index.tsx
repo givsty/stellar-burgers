@@ -1,19 +1,17 @@
 import React, { FC, ReactNode, useEffect } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { Register } from '@pages';
-import { fetchUser } from '../../services/reducers/userSlice';
+import { Navigate } from 'react-router-dom';
 import { Preloader } from '@ui';
+import { useSelector } from '../../services/store';
 
 interface ProtectedRouteProps {
   children: ReactNode;
 }
 
 export const ProtectedRoute: FC<ProtectedRouteProps> = ({ children }) => {
-  const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
-  const isLoading = useAppSelector((state) => state.user.isLoading);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  const isLoading = useSelector((state) => state.user.isLoading);
   const token = localStorage.getItem('refreshToken');
-  console.log(isAuthenticated);
+
   if (!isAuthenticated && isLoading) {
     return <Preloader />;
   }

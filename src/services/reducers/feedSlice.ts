@@ -22,11 +22,6 @@ const initialState: feedSlice = {
   isLoadingFeeds: false
 };
 
-export const fetchIngredients = createAsyncThunk(
-  'ingredients/fetchIngredients',
-  async () => getIngredientsApi()
-);
-
 //Получение всех заказов
 export const fetchFeeds = createAsyncThunk('feed/fetchFeeds', async () =>
   getFeedsApi()

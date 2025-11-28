@@ -1,16 +1,16 @@
-import { FC, useEffect, useMemo } from 'react';
+import { FC, useMemo } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
 import { useParams } from 'react-router-dom';
-import { useAppSelector } from '../hooks/redux';
+import { useSelector } from '../../services/store';
 
 export const OrderInfo: FC = () => {
   const { orderId } = useParams<{ orderId: string }>();
-  const orderData = useAppSelector((state) => state.feedSlice.feed.orders).find(
+  const orderData = useSelector((state) => state.feedSlice.feed.orders).find(
     (order) => order.number === Number(orderId)
   );
-  const ingredients = useAppSelector(
+  const ingredients = useSelector(
     (state) => state.constructorSlice.ingredients
   );
   /* Готовим данные для отображения */
