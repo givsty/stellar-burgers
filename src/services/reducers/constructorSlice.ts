@@ -52,7 +52,6 @@ const constructorSlice = createSlice({
         ...action.payload,
         id: nanoid()
       };
-      console.log(ingredientWithId);
       state.constructorItems.ingredients.push(ingredientWithId);
     },
 

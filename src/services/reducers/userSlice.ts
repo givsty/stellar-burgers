@@ -45,7 +45,6 @@ export const fetchPostUserData = createAsyncThunk(
   async (data: TRegisterData, { dispatch, rejectWithValue }) => {
     try {
       const response = await registerUserApi(data);
-      console.log(response);
       return response.success;
     } catch (error) {
       rejectWithValue(error);
@@ -161,7 +160,6 @@ const userSlice = createSlice({
     });
 
     builder.addCase(fetchUser.rejected, (state, action) => {
-      console.log('asfafaf');
       state.isAuthenticated = false;
       state.user = {
         name: '',
