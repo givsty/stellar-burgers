@@ -25,6 +25,7 @@ import { ProtectedRoute } from '../protected-route';
 import { useDispatch } from '../../services/store';
 import { useEffect } from 'react';
 import { fetchIngredients } from '../../services/reducers/constructorSlice';
+import { fetchUser } from '../../services/reducers/userSlice';
 
 const App = () => {
   const location = useLocation();
@@ -36,6 +37,7 @@ const App = () => {
     navigate(-1);
   };
   useEffect(() => {
+    dispatch(fetchUser());
     dispatch(fetchIngredients());
   }, []);
   return (

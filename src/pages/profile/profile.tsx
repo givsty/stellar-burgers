@@ -56,7 +56,8 @@ export const Profile: FC = () => {
       [e.target.name]: e.target.value
     }));
   };
-
+  console.log(isAuth);
+  if (!isAuth) navigate('/login');
   return (
     <ProfileUI
       formValue={formValue}

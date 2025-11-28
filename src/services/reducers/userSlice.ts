@@ -10,7 +10,7 @@ import {
 } from '@api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TOrder, TUser } from '@utils-types';
-import { setCookie } from '../../utils/cookie';
+import { deleteCookie, setCookie } from '../../utils/cookie';
 
 interface userState {
   isLoadingUserFeeds: boolean;
@@ -86,6 +86,7 @@ export const fetchUserLogout = createAsyncThunk(
     try {
       const response = await logoutApi();
       localStorage.clear();
+      deleteCookie('accessToken');
       return response.success;
     } catch (error) {
       console.log(error);
@@ -155,10 +156,13 @@ const userSlice = createSlice({
 
     builder.addCase(fetchUser.fulfilled, (state, action) => {
       action.payload ? (state.user = action.payload.user) : '';
+      if (action.payload?.success)
+        state.isAuthenticated = action.payload.success;
     });
 
     builder.addCase(fetchUser.rejected, (state, action) => {
-      state.isLoading = false;
+      console.log('asfafaf');
+      state.isAuthenticated = false;
       state.user = {
         name: '',
         email: ''
