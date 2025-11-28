@@ -14,7 +14,6 @@ export const ProtectedRoute: FC<ProtectedRouteProps> = ({
 }) => {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const isLoading = useSelector((state) => state.user.isLoading);
-  const token = localStorage.getItem('refreshToken');
   const location = useLocation();
   if (isLoading) return <Preloader />;
 
@@ -23,7 +22,8 @@ export const ProtectedRoute: FC<ProtectedRouteProps> = ({
   }
 
   if (notAuth && isAuthenticated) {
-    return <Navigate to='/' replace />;
+    const from = location.state?.from || { pathname: '/' };
+    return <Navigate replace to={from} />;
   }
   return children;
 };

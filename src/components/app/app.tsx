@@ -27,8 +27,8 @@ import { useEffect } from 'react';
 import { fetchIngredients } from '../../services/reducers/constructorSlice';
 
 const App = () => {
-  const navigate = useNavigate();
   const location = useLocation();
+  const navigate = useNavigate();
   const backgroundLocation = location.state?.background;
   const dispatch = useDispatch();
 

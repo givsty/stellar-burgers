@@ -1,5 +1,5 @@
 import { getIngredientsApi, orderBurgerApi } from '@api';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient } from '@utils-types';
 
 type orderSlice = {
@@ -48,7 +48,12 @@ const constructorSlice = createSlice({
     },
 
     addIngredient(state, action) {
-      state.constructorItems.ingredients.push(action.payload);
+      const ingredientWithId: TConstructorIngredient = {
+        ...action.payload,
+        id: nanoid()
+      };
+      console.log(ingredientWithId);
+      state.constructorItems.ingredients.push(ingredientWithId);
     },
 
     addBuns(state, action) {
@@ -58,7 +63,7 @@ const constructorSlice = createSlice({
     deleteIngredient(state, action) {
       state.constructorItems.ingredients =
         state.constructorItems.ingredients.filter(
-          (element) => element._id !== action.payload
+          (element) => element.id !== action.payload
         );
     },
     downIngredient(state, action) {
