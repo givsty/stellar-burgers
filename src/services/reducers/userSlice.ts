@@ -159,11 +159,19 @@ const userSlice = createSlice({
 
     builder.addCase(fetchUser.rejected, (state, action) => {
       state.isLoading = false;
+      state.user = {
+        name: '',
+        email: ''
+      };
     });
 
     //logout
     builder.addCase(fetchUserLogout.fulfilled, (state, action) => {
       state.isAuthenticated = false;
+      state.user = {
+        name: '',
+        email: ''
+      };
     });
 
     //Reset password

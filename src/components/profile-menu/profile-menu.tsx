@@ -9,9 +9,7 @@ export const ProfileMenu: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleLogout = () => {
-    dispatch(fetchUserLogout);
-    localStorage.removeItem('refreshToken');
-    navigate('/login');
+    dispatch(fetchUserLogout());
   };
 
   return <ProfileMenuUI handleLogout={handleLogout} pathname={pathname} />;
