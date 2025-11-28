@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from '../../services/store';
 import { fetchPostOrder } from '../../services/reducers/orderSlice';
 import { clearModalData } from '../../services/reducers/orderSlice';
 import { clearConstructor } from '../../services/reducers/constructorSlice';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
   const navigate = useNavigate();
@@ -26,10 +26,8 @@ export const BurgerConstructor: FC = () => {
     if (!constructorItems.bun || orderRequest) return;
 
     if (!isAuth) {
-      return navigate('/login');
+      return navigate('/login', { replace: true });
     }
-
-    if (!isAuth) navigate('/login');
     const orderData = [...order, constructorIngredientsBun._id];
     dispatch(fetchPostOrder(orderData));
   };

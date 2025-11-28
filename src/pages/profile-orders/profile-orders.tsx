@@ -13,7 +13,7 @@ export const ProfileOrders: FC = () => {
   const dispatch = useDispatch();
   dispatch(fetchUserOrders());
 
-  if (!isLoading) {
+  if (!orders) {
     return <Preloader />;
   }
 
