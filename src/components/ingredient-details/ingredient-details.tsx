@@ -6,10 +6,12 @@ import { useSelector } from '../../services/store';
 
 export const IngredientDetails: FC = () => {
   const { ingredientId } = useParams<{ ingredientId: string }>();
-
-  const ingredientData = useSelector(
+  const ingredients = useSelector(
     (state) => state.constructorSlice.ingredients
-  ).filter((element) => element._id == ingredientId)[0];
+  );
+  const ingredientData = ingredients.find(
+    (element) => element._id == ingredientId
+  );
   if (!ingredientData) {
     return <Preloader />;
   }

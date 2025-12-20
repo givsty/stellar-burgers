@@ -6,7 +6,8 @@ import {
   logoutApi,
   registerUserApi,
   TLoginData,
-  TRegisterData
+  TRegisterData,
+  updateUserApi
 } from '@api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TOrder, TUser } from '@utils-types';
@@ -105,10 +106,26 @@ export const fetchResetPassword = createAsyncThunk(
     }
   }
 );
+
 //Получение заказов пользователя
-export const fetchUserOrders = createAsyncThunk('fetchUserOrders', async () =>
-  getOrdersApi()
+export const fetchUserOrders = createAsyncThunk(
+  'fetchUserOrders',
+  getOrdersApi
 );
+
+//Обновить данные пользователя
+export const fetchUpdateUser = createAsyncThunk(
+  'fetchUserUpdateData',
+  async (data: Partial<TRegisterData>) => {
+    try {
+      const response = await updateUserApi(data);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -181,6 +198,17 @@ const userSlice = createSlice({
     builder.addCase(fetchResetPassword.fulfilled, (state, action) => {});
     builder.addCase(fetchResetPassword.rejected, (state, action) => {});
 
+    //update user
+    builder.addCase(fetchUpdateUser.pending, (state, action) => {});
+    builder.addCase(fetchUpdateUser.fulfilled, (state, action) => {
+      action.payload
+        ? (state.user = {
+            name: action.payload?.user.name,
+            email: action.payload?.user.email
+          })
+        : '';
+    });
+    builder.addCase(fetchUpdateUser.rejected, (state, action) => {});
     //userOrders
     builder.addCase(fetchUserOrders.pending, (state, action) => {
       state.isLoadingUserFeeds = true;

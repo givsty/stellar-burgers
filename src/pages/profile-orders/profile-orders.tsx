@@ -1,5 +1,5 @@
 import { ProfileOrdersUI } from '@ui-pages';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { fetchUserOrders } from '../../services/reducers/userSlice';
 import { Preloader } from '@ui';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +9,9 @@ export const ProfileOrders: FC = () => {
   const navigate = useNavigate();
   const orders = useSelector((state) => state.user.ordersUser);
   const dispatch = useDispatch();
-  dispatch(fetchUserOrders());
+  useEffect(() => {
+    dispatch(fetchUserOrders());
+  }, [dispatch]);
 
   if (!orders) {
     return <Preloader />;

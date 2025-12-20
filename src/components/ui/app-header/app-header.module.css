@@ -1,4 +1,5 @@
 .header {
+  text-decoration: none;
   background-color: var(--background);
 }
 .menu {
@@ -21,6 +22,7 @@
 }
 
 .link_active {
+  text-decoration: none;
   color: var(--text-primary-color);
 }
 

@@ -23,9 +23,8 @@ const initialState: feedSlice = {
 };
 
 //Получение всех заказов
-export const fetchFeeds = createAsyncThunk('feed/fetchFeeds', async () =>
-  getFeedsApi()
-);
+export const fetchFeeds = createAsyncThunk('feed/fetchFeeds', getFeedsApi);
+
 const feedSlice = createSlice({
   name: 'feedSlice',
   initialState,

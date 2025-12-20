@@ -39,13 +39,20 @@ const App = () => {
   useEffect(() => {
     dispatch(fetchUser());
     dispatch(fetchIngredients());
-  }, []);
+  });
   return (
     <div className={styles.app}>
       <AppHeader />
       <Routes location={backgroundLocation || location}>
         <Route path='/' element={<ConstructorPage />} />
-        <Route path='/feed' element={<Feed />} />
+        <Route path='/feed'>
+          <Route index element={<Feed />} />
+          <Route path=':orderId' element={<OrderInfo />} />
+        </Route>
+        <Route
+          path='/ingredients/:ingredientId'
+          element={<IngredientDetails />}
+        />
         <Route
           path='/login'
           element={
@@ -65,7 +72,7 @@ const App = () => {
         <Route
           path='/forgot-password'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute notAuth>
               <ForgotPassword />
             </ProtectedRoute>
           }
@@ -94,17 +101,23 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path='/profile/orders/:orderId'
+          element={
+            <ProtectedRoute>
+              <OrderInfo />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
       {backgroundLocation && (
         <Routes>
           <Route
             path='/feed/:orderId'
             element={
-              <ProtectedRoute>
-                <Modal onClose={onClose} title='Заказ'>
-                  <OrderInfo />
-                </Modal>
-              </ProtectedRoute>
+              <Modal onClose={onClose} title='Заказ'>
+                <OrderInfo />
+              </Modal>
             }
           />
           <Route
@@ -115,7 +128,6 @@ const App = () => {
               </Modal>
             }
           />
-          <Route path='*' element={<NotFound404 />} />
           <Route
             path='/profile/orders/:orderId'
             element={
@@ -126,6 +138,7 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route path='*' element={<NotFound404 />} />
         </Routes>
       )}
     </div>

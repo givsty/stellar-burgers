@@ -1,6 +1,6 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
-import { fetchUser } from '../../services/reducers/userSlice';
+import { fetchUpdateUser, fetchUser } from '../../services/reducers/userSlice';
 import { useDispatch, useSelector } from '../../services/store';
 import { useNavigate } from 'react-router-dom';
 
@@ -38,6 +38,7 @@ export const Profile: FC = () => {
     !!formValue.password;
 
   const handleSubmit = (e: SyntheticEvent) => {
+    dispatch(fetchUpdateUser(formValue));
     e.preventDefault();
   };
 

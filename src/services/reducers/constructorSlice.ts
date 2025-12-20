@@ -1,6 +1,12 @@
 import { getIngredientsApi, orderBurgerApi } from '@api';
-import { createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  nanoid,
+  PayloadAction
+} from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient } from '@utils-types';
+import { v4 } from 'uuid';
 
 type orderSlice = {
   order: string[];
@@ -36,7 +42,7 @@ const initialState: orderSlice = {
 
 export const fetchIngredients = createAsyncThunk(
   'ingredients/fetchIngredients',
-  async () => getIngredientsApi()
+  getIngredientsApi
 );
 
 const constructorSlice = createSlice({
@@ -47,12 +53,13 @@ const constructorSlice = createSlice({
       state.order.push(action.payload);
     },
 
-    addIngredient(state, action) {
-      const ingredientWithId: TConstructorIngredient = {
-        ...action.payload,
-        id: nanoid()
-      };
-      state.constructorItems.ingredients.push(ingredientWithId);
+    addIngredient: {
+      prepare: (payload: TIngredient) => ({
+        payload: { ...payload, id: v4() }
+      }),
+      reducer: (state, action: PayloadAction<TConstructorIngredient>) => {
+        state.constructorItems.ingredients.push(action.payload);
+      }
     },
 
     addBuns(state, action) {
@@ -113,8 +120,6 @@ const constructorSlice = createSlice({
     });
 
     builder.addCase(fetchIngredients.fulfilled, (state, action) => {
-      state.isLoadingIngredients = false;
-      state.ingredients = action.payload;
       state.isLoadingIngredients = false;
       state.ingredients = action.payload;
     });
