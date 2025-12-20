@@ -11,7 +11,7 @@ export const OrderInfo: FC = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchOrderModalData(Number(orderId)));
-  });
+  }, [dispatch]);
   const orderData = useSelector(
     (state) => state.order.orderModalData?.[0] || null
   );
