@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom';
 
 import { forgotPasswordApi } from '@api';
 import { ForgotPasswordUI } from '@ui-pages';
+import { fetchResetPassword } from '../../services/reducers/userSlice';
+import { useDispatch } from '../../services/store';
 
 export const ForgotPassword: FC = () => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState<Error | null>(null);
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = (e: SyntheticEvent) => {
@@ -20,6 +22,8 @@ export const ForgotPassword: FC = () => {
         navigate('/reset-password', { replace: true });
       })
       .catch((err) => setError(err));
+
+    dispatch(fetchResetPassword({ email }));
   };
 
   return (

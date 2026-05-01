@@ -1,4 +1,5 @@
 export type TIngredient = {
+  id?: string;
   _id: string;
   name: string;
   type: string;
@@ -36,5 +37,9 @@ export type TUser = {
   email: string;
   name: string;
 };
+
+export interface IUserOrder {
+  [index: string]: string[]
+}
 
 export type TTabMode = 'bun' | 'sauce' | 'main';

@@ -1,12 +1,22 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
+import { fetchUpdateUser, fetchUser } from '../../services/reducers/userSlice';
+import { useDispatch, useSelector } from '../../services/store';
+import { useNavigate } from 'react-router-dom';
 
 export const Profile: FC = () => {
-  /** TODO: взять переменную из стора */
-  const user = {
-    name: '',
-    email: ''
-  };
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user.user);
+  const isAuth = useSelector((state) => state.user.isAuthenticated);
+  const dispatch = useDispatch();
+
+  if (!isAuth) {
+    navigate('/login');
+  }
+
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, [dispatch]);
 
   const [formValue, setFormValue] = useState({
     name: user.name,
@@ -28,6 +38,7 @@ export const Profile: FC = () => {
     !!formValue.password;
 
   const handleSubmit = (e: SyntheticEvent) => {
+    dispatch(fetchUpdateUser(formValue));
     e.preventDefault();
   };
 
@@ -46,7 +57,7 @@ export const Profile: FC = () => {
       [e.target.name]: e.target.value
     }));
   };
-
+  if (!isAuth) navigate('/login');
   return (
     <ProfileUI
       formValue={formValue}
@@ -56,6 +67,4 @@ export const Profile: FC = () => {
       handleInputChange={handleInputChange}
     />
   );
-
-  return null;
 };
