@@ -6,9 +6,13 @@ pipeline{
 
     stages{
         stage("build frontend"){
-            steps{
-                sh "npm install"
+            steps {
                 sh "npm run build"
+            }
+        }
+        stage("e2e test") {
+            steps {
+                sh "npm test"
             }
         }
     }
